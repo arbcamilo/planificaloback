@@ -6,6 +6,6 @@ namespace Planificalo.Shared.Entities
         public int EventoId { get; set; }
         public int InvitadoId { get; set; }
         public DateTime FechaEnvio { get; set; }
-        public bool Confirmado { get; set; }
+        public bool EstadoInvitacion { get; set; }
     }
 }

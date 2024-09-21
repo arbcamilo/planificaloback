@@ -12,6 +12,8 @@ namespace Planificalo.Shared.Entities
         public string Lugar { get; set; }
         public int TipoEventoId { get; set; }
 
+        public string? Imagen { get; set; }
+
         // Relación con Cotizacion
         public List<Cotizacion> Cotizaciones { get; set; }
     }
