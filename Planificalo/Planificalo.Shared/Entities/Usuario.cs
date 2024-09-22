@@ -26,9 +26,9 @@ namespace Planificalo.Shared.Entities
         public string Estado { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
-        public DateTime FechaCreacionCuenta { get; set; }
+        public DateTime FechaNacimiento { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
-        public DateTime FechaNacimiento { get; set; }
+        public DateTime FechaCreacionCuenta { get; set; }
     }
 }
