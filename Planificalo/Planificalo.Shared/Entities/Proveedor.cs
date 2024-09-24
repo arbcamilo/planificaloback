@@ -44,9 +44,6 @@ namespace Planificalo.Shared.Entities
         [MaxLength(20, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres")]
         public string Estado { get; set; } = string.Empty;
 
-        [Range(0, 5, ErrorMessage = "El campo {0} debe estar entre {1} y {2}.")]
-        public double Calificacion { get; set; }
-
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [MaxLength(20, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres")]
         public string TipoDocumento { get; set; } = string.Empty;
