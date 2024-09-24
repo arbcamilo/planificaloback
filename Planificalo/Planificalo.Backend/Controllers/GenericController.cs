@@ -38,9 +38,17 @@ namespace Planificalo.Backend.Controllers
             return Ok(response);
         }
 
-        [HttpPut]
-        public async Task<ActionResult<ActionResponse<T>>> Update(T entity)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ActionResponse<T>>> Update(int id, T entity)
         {
+            // Assuming the entity has a property named Id
+            var entityType = typeof(T);
+            var idProperty = entityType.GetProperty("Id");
+            if (idProperty != null)
+            {
+                idProperty.SetValue(entity, id);
+            }
+
             var response = await _unitOfWork.UpdateAsync(entity);
             return Ok(response);
         }
