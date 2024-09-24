@@ -63,6 +63,16 @@ namespace Planificalo.Backend.Data
             // Definir clave primaria compuesta para ProveedorServicio
             modelBuilder.Entity<ProveedorServicio>()
                 .HasKey(ps => new { ps.ProveedorId, ps.ServicioId });
+
+            DisableCascadeDelete(modelBuilder);
+        }
+
+        private void DisableCascadeDelete(ModelBuilder modelBuilder)
+        {
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

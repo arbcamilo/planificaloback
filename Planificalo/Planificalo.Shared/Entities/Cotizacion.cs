@@ -19,7 +19,7 @@ namespace Planificalo.Shared.Entities
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         public DateTime FechaCreacion { get; set; }
 
-        public DateTime? FechaVencimiento { get; set; }
+        public DateTime? FechaRespuesta { get; set; }
 
         [MaxLength(50, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres")]
         public string Estado { get; set; }
