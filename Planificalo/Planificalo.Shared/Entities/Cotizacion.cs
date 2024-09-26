@@ -17,12 +17,12 @@ namespace Planificalo.Shared.Entities
         public decimal Total { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
-        public DateTime FechaCreacion { get; set; }
+        public DateTime FechaCotizacion { get; set; }
 
         public DateTime? FechaRespuesta { get; set; }
 
         [MaxLength(50, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres")]
-        public string Estado { get; set; }
+        public string EstadoCotizacion { get; set; }
 
         [MaxLength(500, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres")]
         public string Notas { get; set; }

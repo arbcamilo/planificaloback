@@ -21,9 +21,9 @@ namespace Planificalo.Shared.Entities
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         [MaxLength(15, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres")]
-        public string Celular { get; set; }
+        public string Telefono { get; set; }
 
-        public string Estado { get; set; }
+        public string EstadoUsuario { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         public DateTime FechaNacimiento { get; set; }
