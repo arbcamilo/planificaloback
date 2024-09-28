@@ -6,9 +6,9 @@ namespace Planificalo.Backend.Controllers
 {
     [ApiController]
     [Route("api/admin/[controller]")]
-    public class DesistimientosController : GenericController<Desistimiento>
+    public class ProductsController : GenericController<Product>
     {
-        public DesistimientosController(IGenericUnitOfWork<Desistimiento> unitOfWork) : base(unitOfWork)
+        public ProductsController(IGenericUnitOfWork<Product> unitOfWork) : base(unitOfWork)
         {
         }
     }
