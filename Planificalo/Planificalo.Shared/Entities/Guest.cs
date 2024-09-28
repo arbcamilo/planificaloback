@@ -5,6 +5,6 @@ namespace Planificalo.Shared.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-        public bool GuestStatus { get; set; }
+        public string GuestStatus { get; set; }
     }
 }
