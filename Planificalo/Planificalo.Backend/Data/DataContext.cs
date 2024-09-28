@@ -61,11 +61,6 @@ namespace Planificalo.Backend.Data
             // Define composite primary key for ServiceProvider
             modelBuilder.Entity<Shared.Entities.ServiceProvider>()
                 .HasKey(sp => new { sp.ProviderId, sp.ServiceId });
-
-            DisableCascadeDelete(modelBuilder);
-
-            // Call the Seed method
-            DataSeeder.Seed(modelBuilder);
         }
 
         private void DisableCascadeDelete(ModelBuilder modelBuilder)
