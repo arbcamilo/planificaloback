@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Planificalo.Backend.Data;
 
@@ -11,9 +12,11 @@ using Planificalo.Backend.Data;
 namespace Planificalo.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240928165128_fix")]
+    partial class fix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,7 +61,7 @@ namespace Planificalo.Backend.Migrations
                         new
                         {
                             Id = 1,
-                            Date = new DateTime(2024, 9, 28, 11, 55, 59, 172, DateTimeKind.Local).AddTicks(7277),
+                            Date = new DateTime(2024, 9, 28, 11, 51, 28, 16, DateTimeKind.Local).AddTicks(8430),
                             EventTypeId = 1,
                             IsPrivate = false,
                             Location = "Location One",
@@ -68,7 +71,7 @@ namespace Planificalo.Backend.Migrations
                         new
                         {
                             Id = 2,
-                            Date = new DateTime(2024, 9, 29, 11, 55, 59, 172, DateTimeKind.Local).AddTicks(7281),
+                            Date = new DateTime(2024, 9, 29, 11, 51, 28, 16, DateTimeKind.Local).AddTicks(8432),
                             EventTypeId = 2,
                             IsPrivate = true,
                             Location = "Location Two",
@@ -202,7 +205,7 @@ namespace Planificalo.Backend.Migrations
                             EventId = 1,
                             GuestId = 1,
                             InvitationStatus = true,
-                            SendDate = new DateTime(2024, 9, 28, 11, 55, 59, 172, DateTimeKind.Local).AddTicks(7514)
+                            SendDate = new DateTime(2024, 9, 28, 11, 51, 28, 16, DateTimeKind.Local).AddTicks(8613)
                         },
                         new
                         {
@@ -210,7 +213,7 @@ namespace Planificalo.Backend.Migrations
                             EventId = 2,
                             GuestId = 2,
                             InvitationStatus = false,
-                            SendDate = new DateTime(2024, 9, 29, 11, 55, 59, 172, DateTimeKind.Local).AddTicks(7515)
+                            SendDate = new DateTime(2024, 9, 29, 11, 51, 28, 16, DateTimeKind.Local).AddTicks(8615)
                         });
                 });
 
@@ -419,21 +422,6 @@ namespace Planificalo.Backend.Migrations
                             IsNaturalPerson = false,
                             Name = "Provider Two",
                             Status = "Inactive"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Address = "Address three",
-                            City = "City three",
-                            ContactPhone = "09875465465",
-                            Country = "Country three",
-                            Department = "Department three",
-                            DocumentType = "Cedula",
-                            Email = "providerthree@example.com",
-                            IdentityDocument = 5456465456L,
-                            IsNaturalPerson = false,
-                            Name = "Provider three",
-                            Status = "Inactive"
                         });
                 });
 
@@ -489,7 +477,7 @@ namespace Planificalo.Backend.Migrations
                             Notes = "Initial quote for Event One",
                             ProviderId = 1,
                             Quantity = 10,
-                            QuoteDate = new DateTime(2024, 9, 28, 11, 55, 59, 172, DateTimeKind.Local).AddTicks(7403),
+                            QuoteDate = new DateTime(2024, 9, 28, 11, 51, 28, 16, DateTimeKind.Local).AddTicks(8522),
                             QuoteStatus = "Pending",
                             Total = 1000.00m
                         },
@@ -500,7 +488,7 @@ namespace Planificalo.Backend.Migrations
                             Notes = "Initial quote for Event Two",
                             ProviderId = 2,
                             Quantity = 5,
-                            QuoteDate = new DateTime(2024, 9, 28, 11, 55, 59, 172, DateTimeKind.Local).AddTicks(7407),
+                            QuoteDate = new DateTime(2024, 9, 28, 11, 51, 28, 16, DateTimeKind.Local).AddTicks(8525),
                             QuoteStatus = "Confirmed",
                             Total = 500.00m
                         });
@@ -702,7 +690,7 @@ namespace Planificalo.Backend.Migrations
                         new
                         {
                             Id = 1,
-                            AccountCreationDate = new DateTime(2024, 9, 28, 11, 55, 59, 172, DateTimeKind.Local).AddTicks(7193),
+                            AccountCreationDate = new DateTime(2024, 9, 28, 11, 51, 28, 16, DateTimeKind.Local).AddTicks(8362),
                             BirthDate = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DocumentType = "Cedula",
                             Email = "johndoe@example.com",
@@ -714,7 +702,7 @@ namespace Planificalo.Backend.Migrations
                         new
                         {
                             Id = 2,
-                            AccountCreationDate = new DateTime(2024, 9, 28, 11, 55, 59, 172, DateTimeKind.Local).AddTicks(7208),
+                            AccountCreationDate = new DateTime(2024, 9, 28, 11, 51, 28, 16, DateTimeKind.Local).AddTicks(8377),
                             BirthDate = new DateTime(1992, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DocumentType = "Cedula",
                             Email = "janesmith@example.com",
