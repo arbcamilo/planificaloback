@@ -8,6 +8,8 @@ namespace Planificalo.Backend.Data
     {
         public static void Seed(ModelBuilder modelBuilder)
         {
+            DataCleaner.Clean(modelBuilder);
+
             // Seed Users
             modelBuilder.Entity<User>().HasData(
                 new User
