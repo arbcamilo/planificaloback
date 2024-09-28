@@ -6,9 +6,9 @@ namespace Planificalo.Backend.Controllers
 {
     [ApiController]
     [Route("api/admin/[controller]")]
-    public class RevocationsController : GenericController<Revocation>
+    public class GuestsController : GenericController<Guest>
     {
-        public RevocationsController(IGenericUnitOfWork<Revocation> unitOfWork) : base(unitOfWork)
+        public GuestsController(IGenericUnitOfWork<Guest> unitOfWork) : base(unitOfWork)
         {
         }
     }
