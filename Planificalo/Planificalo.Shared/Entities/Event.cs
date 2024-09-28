@@ -11,7 +11,7 @@ namespace Planificalo.Shared.Entities
         public int UserId { get; set; }
         public string Location { get; set; }
         public int EventTypeId { get; set; }
-        public string? Image { get; set; }
+        public bool IsPrivate { get; set; }
 
         // Relationship with Quote
         public List<Quote> Quotes { get; set; }
