@@ -69,6 +69,21 @@ namespace Planificalo.Backend.Data
                     Status = "Inactive",
                     DocumentType = "Cedula",
                     IdentityDocument = 987654321
+                },
+                new Provider
+                {
+                    Id = 3,
+                    Name = "Provider three",
+                    Country = "Country three",
+                    Department = "Department three",
+                    City = "City three",
+                    Address = "Address three",
+                    Email = "providerthree@example.com",
+                    ContactPhone = "09875465465",
+                    IsNaturalPerson = false,
+                    Status = "Inactive",
+                    DocumentType = "Cedula",
+                    IdentityDocument = 5456465456
                 }
             );
 
@@ -82,7 +97,7 @@ namespace Planificalo.Backend.Data
                     Location = "Location One",
                     EventTypeId = 1,
                     Date = DateTime.Now,
-                    Image = "image1.jpg"
+                    IsPrivate = false
                 },
                 new Event
                 {
@@ -92,7 +107,7 @@ namespace Planificalo.Backend.Data
                     Location = "Location Two",
                     EventTypeId = 2,
                     Date = DateTime.Now.AddDays(1),
-                    Image = "image2.jpg"
+                    IsPrivate = true
                 }
             );
 
