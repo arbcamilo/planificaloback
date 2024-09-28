@@ -13,56 +13,54 @@ namespace Planificalo.Backend.Data
             _configuration = configuration;
         }
 
-        public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<Administrador> Administradores { get; set; }
-        public DbSet<UsuarioNormal> UsuariosNormales { get; set; }
-        public DbSet<UsuarioAnonimo> UsuariosAnonimos { get; set; }
-        public DbSet<Evento> Eventos { get; set; }
-        public DbSet<Desistimiento> Desistimientos { get; set; }
-        public DbSet<TipoEvento> TiposEvento { get; set; }
-        public DbSet<Proveedor> Proveedores { get; set; }
-        public DbSet<Servicio> Servicios { get; set; }
-        public DbSet<Producto> Productos { get; set; }
-        public DbSet<ProveedorServicio> ProveedorServicios { get; set; }
-        public DbSet<ProveedorProducto> ProveedorProductos { get; set; }
-        public DbSet<Cotizacion> Cotizaciones { get; set; }
-        public DbSet<CotizacionProducto> CotizacionProductos { get; set; }
-        public DbSet<CotizacionServicio> CotizacionServicios { get; set; }
-        public DbSet<Invitado> Invitados { get; set; }
-        public DbSet<EventoInvitado> EventoInvitados { get; set; }
-        public DbSet<Invitacion> Invitaciones { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Administrator> Administrators { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<Revocation> Revocations { get; set; }
+        public DbSet<EventType> EventTypes { get; set; }
+        public DbSet<Provider> Providers { get; set; }
+        public DbSet<Service> Services { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Shared.Entities.ServiceProvider> ServiceProviders { get; set; }
+        public DbSet<ProductProvider> ProductProviders { get; set; }
+        public DbSet<Quote> Quotes { get; set; }
+        public DbSet<ProductQuote> ProductQuotes { get; set; }
+        public DbSet<ServiceQuote> ServiceQuotes { get; set; }
+        public DbSet<Guest> Guests { get; set; }
+        public DbSet<GuestEvent> GuestEvents { get; set; }
+        public DbSet<Invitation> Invitations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Usuario>()
-                .HasIndex(u => new { u.TipoDocumento, u.DocumentoIdentidad })
+            modelBuilder.Entity<User>()
+                .HasIndex(u => new { u.DocumentType, u.IdentityDocument })
                 .IsUnique();
 
-            modelBuilder.Entity<Proveedor>()
-                .HasIndex(p => new { p.TipoDocumento, p.DocumentoIdentidad })
+            modelBuilder.Entity<Provider>()
+                .HasIndex(p => new { p.DocumentType, p.IdentityDocument })
                 .IsUnique();
 
-            // Definir clave primaria compuesta para CotizacionProducto
-            modelBuilder.Entity<CotizacionProducto>()
-                .HasKey(cp => new { cp.CotizacionId, cp.ProductoId });
+            // Define composite primary key for ProductQuote
+            modelBuilder.Entity<ProductQuote>()
+                .HasKey(pq => new { pq.QuoteId, pq.ProductId });
 
-            // Definir clave primaria compuesta para CotizacionServicio
-            modelBuilder.Entity<CotizacionServicio>()
-                .HasKey(cs => new { cs.CotizacionId, cs.ServicioId });
+            // Define composite primary key for ServiceQuote
+            modelBuilder.Entity<ServiceQuote>()
+                .HasKey(sq => new { sq.QuoteId, sq.ServiceId });
 
-            // Definir clave primaria compuesta para EventoInvitado
-            modelBuilder.Entity<EventoInvitado>()
-                .HasKey(ei => new { ei.EventoId, ei.InvitadoId });
+            // Define composite primary key for GuestEvent
+            modelBuilder.Entity<GuestEvent>()
+                .HasKey(ge => new { ge.EventId, ge.GuestId });
 
-            // Definir clave primaria compuesta para ProveedorProducto
-            modelBuilder.Entity<ProveedorProducto>()
-                .HasKey(pp => new { pp.ProveedorId, pp.ProductoId });
+            // Define composite primary key for ProductProvider
+            modelBuilder.Entity<ProductProvider>()
+                .HasKey(pp => new { pp.ProviderId, pp.ProductId });
 
-            // Definir clave primaria compuesta para ProveedorServicio
-            modelBuilder.Entity<ProveedorServicio>()
-                .HasKey(ps => new { ps.ProveedorId, ps.ServicioId });
+            // Define composite primary key for ServiceProvider
+            modelBuilder.Entity<Shared.Entities.ServiceProvider>()
+                .HasKey(sp => new { sp.ProviderId, sp.ServiceId });
 
             DisableCascadeDelete(modelBuilder);
         }

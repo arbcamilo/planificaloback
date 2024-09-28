@@ -6,9 +6,9 @@ namespace Planificalo.Backend.Controllers
 {
     [ApiController]
     [Route("api/admin/[controller]")]
-    public class EventosController : GenericController<Evento>
+    public class EventsController : GenericController<Event>
     {
-        public EventosController(IGenericUnitOfWork<Evento> unitOfWork) : base(unitOfWork)
+        public EventsController(IGenericUnitOfWork<Event> unitOfWork) : base(unitOfWork)
         {
         }
     }
