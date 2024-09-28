@@ -1,10 +1,10 @@
 namespace Planificalo.Shared.Entities
 {
-    public class Invitado
+    public class Guest
     {
         public int Id { get; set; }
-        public string Nombre { get; set; }
+        public string Name { get; set; }
         public string Email { get; set; }
-        public bool EstadoInvitado { get; set; }
+        public bool GuestStatus { get; set; }
     }
 }

@@ -9,9 +9,9 @@ namespace Planificalo.Backend.Controllers
 {
     [ApiController]
     [Route("api/admin/[controller]")]
-    public class ProveedoresController : GenericController<Proveedor>
+    public class ProvidersController : GenericController<Provider>
     {
-        public ProveedoresController(IGenericUnitOfWork<Proveedor> unitOfWork) : base(unitOfWork)
+        public ProvidersController(IGenericUnitOfWork<Provider> unitOfWork) : base(unitOfWork)
         {
         }
     }

@@ -1,8 +1,8 @@
 namespace Planificalo.Shared.Entities
 {
-    public class TipoEvento
+    public class EventType
     {
         public int Id { get; set; }
-        public string Nombre { get; set; }
+        public string Name { get; set; }
     }
 }
