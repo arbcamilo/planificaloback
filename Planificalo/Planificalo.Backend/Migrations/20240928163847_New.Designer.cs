@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Planificalo.Backend.Data;
 
@@ -11,9 +12,11 @@ using Planificalo.Backend.Data;
 namespace Planificalo.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240928163847_New")]
+    partial class New
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,8 +39,8 @@ namespace Planificalo.Backend.Migrations
                     b.Property<int>("EventTypeId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsPrivate")
-                        .HasColumnType("bit");
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
                         .IsRequired()
@@ -53,28 +56,6 @@ namespace Planificalo.Backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Events");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Date = new DateTime(2024, 9, 28, 11, 10, 21, 797, DateTimeKind.Local).AddTicks(4477),
-                            EventTypeId = 1,
-                            Image = "image1.jpg",
-                            Location = "Location One",
-                            Title = "Event One",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Date = new DateTime(2024, 9, 29, 11, 10, 21, 797, DateTimeKind.Local).AddTicks(4480),
-                            EventTypeId = 2,
-                            Image = "image2.jpg",
-                            Location = "Location Two",
-                            Title = "Event Two",
-                            UserId = 2
-                        });
                 });
 
             modelBuilder.Entity("Planificalo.Shared.Entities.EventType", b =>
@@ -92,18 +73,6 @@ namespace Planificalo.Backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EventTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Conference"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Workshop"
-                        });
                 });
 
             modelBuilder.Entity("Planificalo.Shared.Entities.Guest", b =>
@@ -128,22 +97,6 @@ namespace Planificalo.Backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Guests");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "guestone@example.com",
-                            GuestStatus = true,
-                            Name = "Guest One"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "guesttwo@example.com",
-                            GuestStatus = false,
-                            Name = "Guest Two"
-                        });
                 });
 
             modelBuilder.Entity("Planificalo.Shared.Entities.GuestEvent", b =>
@@ -157,18 +110,6 @@ namespace Planificalo.Backend.Migrations
                     b.HasKey("EventId", "GuestId");
 
                     b.ToTable("GuestEvents");
-
-                    b.HasData(
-                        new
-                        {
-                            EventId = 1,
-                            GuestId = 1
-                        },
-                        new
-                        {
-                            EventId = 2,
-                            GuestId = 2
-                        });
                 });
 
             modelBuilder.Entity("Planificalo.Shared.Entities.Invitation", b =>
@@ -194,24 +135,6 @@ namespace Planificalo.Backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Invitations");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            EventId = 1,
-                            GuestId = 1,
-                            InvitationStatus = true,
-                            SendDate = new DateTime(2024, 9, 28, 11, 10, 21, 797, DateTimeKind.Local).AddTicks(5037)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            EventId = 2,
-                            GuestId = 2,
-                            InvitationStatus = false,
-                            SendDate = new DateTime(2024, 9, 29, 11, 10, 21, 797, DateTimeKind.Local).AddTicks(5043)
-                        });
                 });
 
             modelBuilder.Entity("Planificalo.Shared.Entities.Product", b =>
@@ -239,24 +162,6 @@ namespace Planificalo.Backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Amount = 100,
-                            Description = "Plastic Chair",
-                            Price = 10.00m,
-                            ProductType = "Chair"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Amount = 50,
-                            Description = "Wooden Table",
-                            Price = 20.00m,
-                            ProductType = "Table"
-                        });
                 });
 
             modelBuilder.Entity("Planificalo.Shared.Entities.ProductProvider", b =>
@@ -272,18 +177,6 @@ namespace Planificalo.Backend.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductProviders");
-
-                    b.HasData(
-                        new
-                        {
-                            ProviderId = 1,
-                            ProductId = 1
-                        },
-                        new
-                        {
-                            ProviderId = 2,
-                            ProductId = 2
-                        });
                 });
 
             modelBuilder.Entity("Planificalo.Shared.Entities.ProductQuote", b =>
@@ -305,22 +198,6 @@ namespace Planificalo.Backend.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductQuotes");
-
-                    b.HasData(
-                        new
-                        {
-                            QuoteId = 1,
-                            ProductId = 1,
-                            Amount = 10,
-                            UnitPrice = 0m
-                        },
-                        new
-                        {
-                            QuoteId = 2,
-                            ProductId = 2,
-                            Amount = 5,
-                            UnitPrice = 0m
-                        });
                 });
 
             modelBuilder.Entity("Planificalo.Shared.Entities.Provider", b =>
@@ -388,38 +265,6 @@ namespace Planificalo.Backend.Migrations
                         .IsUnique();
 
                     b.ToTable("Providers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Address = "Address One",
-                            City = "City One",
-                            ContactPhone = "1234567890",
-                            Country = "Country One",
-                            Department = "Department One",
-                            DocumentType = "Cedula",
-                            Email = "providerone@example.com",
-                            IdentityDocument = 123456789L,
-                            IsNaturalPerson = true,
-                            Name = "Provider One",
-                            Status = "Active"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Address = "Address Two",
-                            City = "City Two",
-                            ContactPhone = "0987654321",
-                            Country = "Country Two",
-                            Department = "Department Two",
-                            DocumentType = "Cedula",
-                            Email = "providertwo@example.com",
-                            IdentityDocument = 987654321L,
-                            IsNaturalPerson = false,
-                            Name = "Provider Two",
-                            Status = "Inactive"
-                        });
                 });
 
             modelBuilder.Entity("Planificalo.Shared.Entities.Quote", b =>
@@ -465,30 +310,6 @@ namespace Planificalo.Backend.Migrations
                     b.HasIndex("ProviderId");
 
                     b.ToTable("Quotes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            EventId = 1,
-                            Notes = "Initial quote for Event One",
-                            ProviderId = 1,
-                            Quantity = 10,
-                            QuoteDate = new DateTime(2024, 9, 28, 11, 10, 21, 797, DateTimeKind.Local).AddTicks(4778),
-                            QuoteStatus = "Pending",
-                            Total = 1000.00m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            EventId = 2,
-                            Notes = "Initial quote for Event Two",
-                            ProviderId = 2,
-                            Quantity = 5,
-                            QuoteDate = new DateTime(2024, 9, 28, 11, 10, 21, 797, DateTimeKind.Local).AddTicks(4787),
-                            QuoteStatus = "Confirmed",
-                            Total = 500.00m
-                        });
                 });
 
             modelBuilder.Entity("Planificalo.Shared.Entities.Revocation", b =>
@@ -543,24 +364,6 @@ namespace Planificalo.Backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Services");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Catering Service",
-                            Price = 100.00m,
-                            Quantity = "10",
-                            ServiceType = "Catering"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Photography Service",
-                            Price = 200.00m,
-                            Quantity = "5",
-                            ServiceType = "Photography"
-                        });
                 });
 
             modelBuilder.Entity("Planificalo.Shared.Entities.ServiceProvider", b =>
@@ -576,18 +379,6 @@ namespace Planificalo.Backend.Migrations
                     b.HasIndex("ServiceId");
 
                     b.ToTable("ServiceProviders");
-
-                    b.HasData(
-                        new
-                        {
-                            ProviderId = 1,
-                            ServiceId = 1
-                        },
-                        new
-                        {
-                            ProviderId = 2,
-                            ServiceId = 2
-                        });
                 });
 
             modelBuilder.Entity("Planificalo.Shared.Entities.ServiceQuote", b =>
@@ -609,22 +400,6 @@ namespace Planificalo.Backend.Migrations
                     b.HasIndex("ServiceId");
 
                     b.ToTable("ServiceQuotes");
-
-                    b.HasData(
-                        new
-                        {
-                            QuoteId = 1,
-                            ServiceId = 1,
-                            Quantity = 10,
-                            UnitPrice = 0m
-                        },
-                        new
-                        {
-                            QuoteId = 2,
-                            ServiceId = 2,
-                            Quantity = 5,
-                            UnitPrice = 0m
-                        });
                 });
 
             modelBuilder.Entity("Planificalo.Shared.Entities.User", b =>
@@ -682,32 +457,6 @@ namespace Planificalo.Backend.Migrations
                     b.HasDiscriminator().HasValue("User");
 
                     b.UseTphMappingStrategy();
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AccountCreationDate = new DateTime(2024, 9, 28, 11, 10, 21, 797, DateTimeKind.Local).AddTicks(4373),
-                            BirthDate = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DocumentType = "Cedula",
-                            Email = "johndoe@example.com",
-                            IdentityDocument = 123456789L,
-                            Name = "John Doe",
-                            Phone = "1234567890",
-                            UserStatus = "Active"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AccountCreationDate = new DateTime(2024, 9, 28, 11, 10, 21, 797, DateTimeKind.Local).AddTicks(4392),
-                            BirthDate = new DateTime(1992, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DocumentType = "Cedula",
-                            Email = "janesmith@example.com",
-                            IdentityDocument = 987654321L,
-                            Name = "Jane Smith",
-                            Phone = "0987654321",
-                            UserStatus = "Inactive"
-                        });
                 });
 
             modelBuilder.Entity("Planificalo.Shared.Entities.Administrator", b =>
