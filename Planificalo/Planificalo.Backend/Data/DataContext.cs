@@ -63,6 +63,9 @@ namespace Planificalo.Backend.Data
                 .HasKey(sp => new { sp.ProviderId, sp.ServiceId });
 
             DisableCascadeDelete(modelBuilder);
+
+            // Call the Seed method
+            DataSeeder.Seed(modelBuilder);
         }
 
         private void DisableCascadeDelete(ModelBuilder modelBuilder)
