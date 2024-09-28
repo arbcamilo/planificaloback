@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Planificalo.Backend.Data;
 
@@ -11,9 +12,11 @@ using Planificalo.Backend.Data;
 namespace Planificalo.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240928160534_NewSeed")]
+    partial class NewSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,8 +39,8 @@ namespace Planificalo.Backend.Migrations
                     b.Property<int>("EventTypeId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsPrivate")
-                        .HasColumnType("bit");
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
                         .IsRequired()
@@ -58,7 +61,7 @@ namespace Planificalo.Backend.Migrations
                         new
                         {
                             Id = 1,
-                            Date = new DateTime(2024, 9, 28, 11, 10, 21, 797, DateTimeKind.Local).AddTicks(4477),
+                            Date = new DateTime(2024, 9, 28, 11, 5, 33, 454, DateTimeKind.Local).AddTicks(8243),
                             EventTypeId = 1,
                             Image = "image1.jpg",
                             Location = "Location One",
@@ -68,7 +71,7 @@ namespace Planificalo.Backend.Migrations
                         new
                         {
                             Id = 2,
-                            Date = new DateTime(2024, 9, 29, 11, 10, 21, 797, DateTimeKind.Local).AddTicks(4480),
+                            Date = new DateTime(2024, 9, 29, 11, 5, 33, 454, DateTimeKind.Local).AddTicks(8247),
                             EventTypeId = 2,
                             Image = "image2.jpg",
                             Location = "Location Two",
@@ -202,7 +205,7 @@ namespace Planificalo.Backend.Migrations
                             EventId = 1,
                             GuestId = 1,
                             InvitationStatus = true,
-                            SendDate = new DateTime(2024, 9, 28, 11, 10, 21, 797, DateTimeKind.Local).AddTicks(5037)
+                            SendDate = new DateTime(2024, 9, 28, 11, 5, 33, 454, DateTimeKind.Local).AddTicks(8651)
                         },
                         new
                         {
@@ -210,7 +213,7 @@ namespace Planificalo.Backend.Migrations
                             EventId = 2,
                             GuestId = 2,
                             InvitationStatus = false,
-                            SendDate = new DateTime(2024, 9, 29, 11, 10, 21, 797, DateTimeKind.Local).AddTicks(5043)
+                            SendDate = new DateTime(2024, 9, 29, 11, 5, 33, 454, DateTimeKind.Local).AddTicks(8681)
                         });
                 });
 
@@ -474,7 +477,7 @@ namespace Planificalo.Backend.Migrations
                             Notes = "Initial quote for Event One",
                             ProviderId = 1,
                             Quantity = 10,
-                            QuoteDate = new DateTime(2024, 9, 28, 11, 10, 21, 797, DateTimeKind.Local).AddTicks(4778),
+                            QuoteDate = new DateTime(2024, 9, 28, 11, 5, 33, 454, DateTimeKind.Local).AddTicks(8451),
                             QuoteStatus = "Pending",
                             Total = 1000.00m
                         },
@@ -485,7 +488,7 @@ namespace Planificalo.Backend.Migrations
                             Notes = "Initial quote for Event Two",
                             ProviderId = 2,
                             Quantity = 5,
-                            QuoteDate = new DateTime(2024, 9, 28, 11, 10, 21, 797, DateTimeKind.Local).AddTicks(4787),
+                            QuoteDate = new DateTime(2024, 9, 28, 11, 5, 33, 454, DateTimeKind.Local).AddTicks(8456),
                             QuoteStatus = "Confirmed",
                             Total = 500.00m
                         });
@@ -687,7 +690,7 @@ namespace Planificalo.Backend.Migrations
                         new
                         {
                             Id = 1,
-                            AccountCreationDate = new DateTime(2024, 9, 28, 11, 10, 21, 797, DateTimeKind.Local).AddTicks(4373),
+                            AccountCreationDate = new DateTime(2024, 9, 28, 11, 5, 33, 454, DateTimeKind.Local).AddTicks(8108),
                             BirthDate = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DocumentType = "Cedula",
                             Email = "johndoe@example.com",
@@ -699,7 +702,7 @@ namespace Planificalo.Backend.Migrations
                         new
                         {
                             Id = 2,
-                            AccountCreationDate = new DateTime(2024, 9, 28, 11, 10, 21, 797, DateTimeKind.Local).AddTicks(4392),
+                            AccountCreationDate = new DateTime(2024, 9, 28, 11, 5, 33, 454, DateTimeKind.Local).AddTicks(8126),
                             BirthDate = new DateTime(1992, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DocumentType = "Cedula",
                             Email = "janesmith@example.com",
