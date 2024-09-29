@@ -12,8 +12,8 @@ using Planificalo.Backend.Data;
 namespace Planificalo.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240929005707_typeQuotes")]
-    partial class typeQuotes
+    [Migration("20240929154447_FixesDatabaseDate2")]
+    partial class FixesDatabaseDate2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,15 +86,18 @@ namespace Planificalo.Backend.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("GuestStatus")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -152,7 +155,8 @@ namespace Planificalo.Backend.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -350,14 +354,14 @@ namespace Planificalo.Backend.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Quantity")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
 
                     b.Property<string>("ServiceType")
                         .IsRequired()
@@ -412,16 +416,11 @@ namespace Planificalo.Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("AccountCreationDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("AccountCreationDate")
+                        .HasColumnType("date");
 
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
+                    b.Property<DateOnly>("BirthDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("DocumentType")
                         .IsRequired()
@@ -438,7 +437,8 @@ namespace Planificalo.Backend.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -447,7 +447,8 @@ namespace Planificalo.Backend.Migrations
 
                     b.Property<string>("UserStatus")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -455,17 +456,6 @@ namespace Planificalo.Backend.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
-
-                    b.HasDiscriminator().HasValue("User");
-
-                    b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("Planificalo.Shared.Entities.Administrator", b =>
-                {
-                    b.HasBaseType("Planificalo.Shared.Entities.User");
-
-                    b.HasDiscriminator().HasValue("Administrator");
                 });
 
             modelBuilder.Entity("Planificalo.Shared.Entities.ProductProvider", b =>

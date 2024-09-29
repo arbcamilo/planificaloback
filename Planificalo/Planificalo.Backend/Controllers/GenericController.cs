@@ -32,14 +32,14 @@ namespace Planificalo.Backend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ActionResponse<T>>> Add(T entity)
+        public virtual async Task<ActionResult<ActionResponse<T>>> Add(T entity)
         {
             var response = await _unitOfWork.AddAsync(entity);
             return Ok(response);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<ActionResponse<T>>> Update(int id, T entity)
+        public virtual async Task<ActionResult<ActionResponse<T>>> Update(int id, T entity)
         {
             // Assuming the entity has a property named Id
             var entityType = typeof(T);

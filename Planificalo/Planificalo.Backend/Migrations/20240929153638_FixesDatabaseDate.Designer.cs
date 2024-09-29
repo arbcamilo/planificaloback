@@ -12,8 +12,8 @@ using Planificalo.Backend.Data;
 namespace Planificalo.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240928163847_New")]
-    partial class New
+    [Migration("20240929153638_FixesDatabaseDate")]
+    partial class FixesDatabaseDate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,13 +33,14 @@ namespace Planificalo.Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
 
                     b.Property<int>("EventTypeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Image")
+                    b.Property<string>("IsPrivate")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
@@ -87,8 +88,9 @@ namespace Planificalo.Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("GuestStatus")
-                        .HasColumnType("bit");
+                    b.Property<string>("GuestStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -353,9 +355,8 @@ namespace Planificalo.Backend.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Quantity")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
 
                     b.Property<string>("ServiceType")
                         .IsRequired()
@@ -410,16 +411,11 @@ namespace Planificalo.Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("AccountCreationDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("AccountCreationDate")
+                        .HasColumnType("date");
 
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
+                    b.Property<DateOnly>("BirthDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("DocumentType")
                         .IsRequired()
@@ -453,17 +449,6 @@ namespace Planificalo.Backend.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
-
-                    b.HasDiscriminator().HasValue("User");
-
-                    b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("Planificalo.Shared.Entities.Administrator", b =>
-                {
-                    b.HasBaseType("Planificalo.Shared.Entities.User");
-
-                    b.HasDiscriminator().HasValue("Administrator");
                 });
 
             modelBuilder.Entity("Planificalo.Shared.Entities.ProductProvider", b =>
@@ -471,13 +456,13 @@ namespace Planificalo.Backend.Migrations
                     b.HasOne("Planificalo.Shared.Entities.Product", "Product")
                         .WithMany("ProductProvider")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Planificalo.Shared.Entities.Provider", "Provider")
                         .WithMany("ProductProviders")
                         .HasForeignKey("ProviderId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Product");
@@ -490,13 +475,13 @@ namespace Planificalo.Backend.Migrations
                     b.HasOne("Planificalo.Shared.Entities.Product", "Product")
                         .WithMany("ProductQuote")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Planificalo.Shared.Entities.Quote", "Quote")
                         .WithMany("ProductQuotes")
                         .HasForeignKey("QuoteId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Product");
@@ -509,13 +494,13 @@ namespace Planificalo.Backend.Migrations
                     b.HasOne("Planificalo.Shared.Entities.Event", "Event")
                         .WithMany("Quotes")
                         .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Planificalo.Shared.Entities.Provider", "Provider")
                         .WithMany("Quotes")
                         .HasForeignKey("ProviderId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Event");
@@ -528,13 +513,13 @@ namespace Planificalo.Backend.Migrations
                     b.HasOne("Planificalo.Shared.Entities.Provider", "Provider")
                         .WithMany("ServiceProviders")
                         .HasForeignKey("ProviderId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Planificalo.Shared.Entities.Service", "Service")
                         .WithMany("ServiceProviders")
                         .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Provider");
@@ -547,13 +532,13 @@ namespace Planificalo.Backend.Migrations
                     b.HasOne("Planificalo.Shared.Entities.Quote", "Quote")
                         .WithMany("ServiceQuotes")
                         .HasForeignKey("QuoteId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Planificalo.Shared.Entities.Service", "Service")
                         .WithMany("ServiceQuotes")
                         .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Quote");

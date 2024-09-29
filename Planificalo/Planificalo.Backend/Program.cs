@@ -4,6 +4,9 @@ using Planificalo.Backend.Repositories.Implementations;
 using Planificalo.Backend.Repositories.Interfaces;
 using Planificalo.Backend.UnitsOfWork.Implementations;
 using Planificalo.Backend.UnitsOfWork.Interfaces;
+using Planificalo.Shared.Entities;
+using Planificalo.Shared.Repositories;
+using Planificalo.Shared.UnitOfWork;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +22,12 @@ builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=DefaultConn
 // Corrected registrations
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
+
+// Register specific services for Service and Product
+builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
+builder.Services.AddScoped<IServiceUnitOfWork, ServiceUnitOfWork>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductUnitOfWork, ProductUnitOfWork>();
 
 var app = builder.Build();
 
