@@ -52,12 +52,12 @@ namespace Planificalo.Shared.Entities
         public long IdentityDocument { get; set; }
 
         // Relationship with Quote
-        public List<Quote> Quotes { get; set; } = new List<Quote>();
+        public List<Quote>? Quotes { get; set; } = new List<Quote>();
 
         // Relationship with ServiceProvider
-        public List<ServiceProvider> ServiceProviders { get; set; } = new List<ServiceProvider>();
+        public List<ServiceProvider>? ServiceProviders { get; set; } = new List<ServiceProvider>();
 
         // Relationship with ProductProvider
-        public List<ProductProvider> ProductProviders { get; set; } = new List<ProductProvider>();
+        public List<ProductProvider>? ProductProviders { get; set; } = new List<ProductProvider>();
     }
 }

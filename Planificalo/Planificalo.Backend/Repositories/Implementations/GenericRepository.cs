@@ -23,6 +23,7 @@ namespace Planificalo.Backend.Repositories.Implementations
         {
             try
             {
+                ConvertDateProperties(entity);
                 await _entity.AddAsync(entity);
                 await _context.SaveChangesAsync();
                 return new ActionResponse<T>
@@ -134,6 +135,7 @@ namespace Planificalo.Backend.Repositories.Implementations
         {
             try
             {
+                ConvertDateProperties(entity);
                 _entity.Update(entity);
                 await _context.SaveChangesAsync();
                 return new ActionResponse<T>
@@ -166,6 +168,22 @@ namespace Planificalo.Backend.Repositories.Implementations
                 CodError = "ERR003",
                 Message = ex.Message
             };
+        }
+
+        private void ConvertDateProperties(T entity)
+        {
+            var properties = typeof(T).GetProperties();
+            foreach (var property in properties)
+            {
+                if (property.PropertyType == typeof(DateTime) || property.PropertyType == typeof(DateTime?))
+                {
+                    var value = property.GetValue(entity);
+                    if (value != null && DateTime.TryParseExact(value.ToString(), "dd-MM-yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime date))
+                    {
+                        property.SetValue(entity, date);
+                    }
+                }
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Planificalo.Shared.Entities
 {
@@ -7,13 +8,13 @@ namespace Planificalo.Shared.Entities
         public int Id { get; set; }
         public string ServiceType { get; set; }
         public decimal Price { get; set; }
-        public string Quantity { get; set; }
+        public int Quantity { get; set; }
+
+        [MaxLength(500, ErrorMessage = "The field {0} cannot have more than {1} characters")]
         public string Description { get; set; }
 
-        // Relationship with ServiceProvider
-        public List<ServiceProvider> ServiceProviders { get; set; }
+        public List<ServiceProvider>? ServiceProviders { get; set; }
 
-        // Relationship with ServiceQuote
-        public List<ServiceQuote> ServiceQuotes { get; set; }
+        public List<ServiceQuote>? ServiceQuotes { get; set; }
     }
 }
