@@ -28,9 +28,9 @@ namespace Planificalo.Shared.Entities
         public string Notes { get; set; }
 
         // Relationship with ProductQuote
-        public List<ProductQuote> ProductQuotes { get; set; }
+        public List<ProductQuote>? ProductQuotes { get; set; }
 
         // Relationship with ServiceQuote
-        public List<ServiceQuote> ServiceQuotes { get; set; }
+        public List<ServiceQuote>? ServiceQuotes { get; set; }
     }
 }

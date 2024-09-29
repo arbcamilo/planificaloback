@@ -14,7 +14,6 @@ namespace Planificalo.Backend.Data
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Administrator> Administrators { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Revocation> Revocations { get; set; }
         public DbSet<EventType> EventTypes { get; set; }

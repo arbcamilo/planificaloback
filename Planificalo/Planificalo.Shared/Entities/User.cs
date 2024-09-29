@@ -13,6 +13,8 @@ namespace Planificalo.Shared.Entities
         [Required(ErrorMessage = "The field {0} is required.")]
         public long IdentityDocument { get; set; }
 
+        [Required(ErrorMessage = "The field {0} is required.")]
+        [MaxLength(100, ErrorMessage = "The field {0} cannot have more than {1} characters")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required.")]
@@ -23,12 +25,13 @@ namespace Planificalo.Shared.Entities
         [MaxLength(15, ErrorMessage = "The field {0} cannot have more than {1} characters")]
         public string Phone { get; set; }
 
+        [MaxLength(100, ErrorMessage = "The field {0} cannot have more than {1} characters")]
         public string UserStatus { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required.")]
-        public DateTime BirthDate { get; set; }
+        public DateOnly BirthDate { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required.")]
-        public DateTime AccountCreationDate { get; set; }
+        public DateOnly AccountCreationDate { get; set; }
     }
 }
