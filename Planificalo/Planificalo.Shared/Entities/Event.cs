@@ -7,13 +7,13 @@ namespace Planificalo.Shared.Entities
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public DateTime Date { get; set; }
+        public DateOnly Date { get; set; }
         public int UserId { get; set; }
         public string Location { get; set; }
         public int EventTypeId { get; set; }
-        public bool IsPrivate { get; set; }
+        public string IsPrivate { get; set; }
 
         // Relationship with Quote
-        public List<Quote> Quotes { get; set; }
+        public List<Quote>? Quotes { get; set; }
     }
 }
