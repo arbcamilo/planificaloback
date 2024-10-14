@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Planificalo.Backend.Data;
+using Planificalo.Backend.Helpers;
 using Planificalo.Backend.UnitsOfWork.Interfaces;
 using Planificalo.Shared.DTOs;
 using Planificalo.Shared.Entities;
+using Planificalo.Shared.Responses;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -15,11 +18,15 @@ namespace Planificalo.Backend.Controllers
     {
         private readonly IUsersUnitOfWork _usersUnitOfWork;
         private readonly IConfiguration _configuration;
+        private readonly IMailHelper _mailHelper;
+        private readonly DataContext _context;
 
-        public UsersController(IUsersUnitOfWork usersUnitOfWork, IConfiguration configuration)
+        public UsersController(IUsersUnitOfWork usersUnitOfWork, IConfiguration configuration, IMailHelper mailHelper, DataContext context)
         {
             _usersUnitOfWork = usersUnitOfWork;
             _configuration = configuration;
+            _mailHelper = mailHelper;
+            _context = context;
         }
 
         [HttpPost("CreateUser")]
@@ -30,7 +37,13 @@ namespace Planificalo.Backend.Controllers
             if (result.Succeeded)
             {
                 await _usersUnitOfWork.AddUserToRoleAsync(user, user.UserType.ToString());
-                return Ok(BuildToken(user));
+                var response = await SendConfirmationEmailAsync(user, model.Language);
+                if (response.Success)
+                {
+                    return NoContent();
+                }
+
+                return BadRequest(response.Message);
             }
             return BadRequest(result.Errors.FirstOrDefault());
         }
@@ -44,7 +57,64 @@ namespace Planificalo.Backend.Controllers
                 var user = await _usersUnitOfWork.GetUserAsync(model.Email);
                 return Ok(BuildToken(user));
             }
+
+            if (result.IsLockedOut)
+            {
+                return BadRequest("The user is locked");
+            }
+
+            if (result.IsNotAllowed)
+            {
+                return BadRequest("The user is not allowed");
+            }
             return BadRequest("Invalid login attempt");
+        }
+
+        [HttpGet("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmailAsync(string userId, string token)
+        {
+            token = token.Replace(" ", "+");
+            var user = await _usersUnitOfWork.GetUserAsync(new Guid(userId));
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _usersUnitOfWork.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+                return BadRequest(result.Errors.FirstOrDefault() + " " + token);
+            }
+
+            return NoContent();
+        }
+
+        private async Task<ActionResponse<string>> SendConfirmationEmailAsync(User user, string language)
+        {
+            var mytoken = await _usersUnitOfWork.GenerateEmailConfirmationTokenAsync(user);
+            var tokenLink = Url.Action("ConfirmEmail", "Users", new
+            {
+                userId = user.Id,
+                token = mytoken
+            }, protocol: HttpContext.Request.Scheme, _configuration["UrlFrontend"]);
+
+            if (language == "es")
+            {
+                return _mailHelper.SendEmail(user.FullName, user.Email!, _configuration["Mail:SubjectConfirmationES"]!, string.Format(_configuration["Mail:BodyConfirmationES"]!, tokenLink), language);
+            }
+
+            return _mailHelper.SendEmail(user.FullName, user.Email, _configuration["Mail:SubjectConfirmationES"]!, string.Format(_configuration["Mail:BodyConfirmationES"]!, tokenLink), language);
+        }
+
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<ActionResponse<IEnumerable<User>>>> GetAll()
+        {
+            var users = await _usersUnitOfWork.GetAllUsersAsync();
+            return Ok(new ActionResponse<IEnumerable<User>>
+            {
+                Success = true,
+                Entity = users
+            });
         }
 
         private TokenDTO BuildToken(User user)

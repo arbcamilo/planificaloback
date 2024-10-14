@@ -22,5 +22,7 @@ namespace Planificalo.Shared.DTOs
         [Required(ErrorMessage = "The field {0} is required.")]
         [StringLength(20, MinimumLength = 6, ErrorMessage = "The field {0} must have between {2} and {1} characters.")]
         public string ConfirmPassword { get; set; } = null;
+
+        public string Language { get; set; } = null;
     }
 }

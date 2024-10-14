@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Planificalo.Backend.Data;
 using Planificalo.Backend.Repositories.Interfaces;
 using Planificalo.Shared.DTOs;
@@ -43,6 +44,23 @@ namespace Planificalo.Backend.Repositories.Implementations
             }
         }
 
+        public async Task<IdentityResult> ConfirmEmailAsync(User user, string token)
+        {
+            return await _userManager.ConfirmEmailAsync(user, token);
+        }
+
+        public async Task<User> GetUserAsync(Guid userId)
+        {
+            var user = await _dataContext.Users
+                .FirstOrDefaultAsync(x => x.Id == userId.ToString());
+            return user;
+        }
+
+        public async Task<string> GenerateEmailConfirmationTokenAsync(User user)
+        {
+            return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        }
+
         public async Task<User> GetUserAsync(string email)
         {
             return await _userManager.FindByEmailAsync(email);
@@ -56,6 +74,11 @@ namespace Planificalo.Backend.Repositories.Implementations
         public async Task<SignInResult> LoginAsync(LoginDTO model)
         {
             return await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+        }
+
+        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        {
+            return await _userManager.Users.ToListAsync();
         }
 
         public async Task LogoutAsync()
