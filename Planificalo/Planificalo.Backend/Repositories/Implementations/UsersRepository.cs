@@ -4,6 +4,7 @@ using Planificalo.Backend.Data;
 using Planificalo.Backend.Repositories.Interfaces;
 using Planificalo.Shared.DTOs;
 using Planificalo.Shared.Entities;
+using Planificalo.Shared.Responses;
 
 namespace Planificalo.Backend.Repositories.Implementations
 {
@@ -84,6 +85,92 @@ namespace Planificalo.Backend.Repositories.Implementations
         public async Task LogoutAsync()
         {
             await _signInManager.SignOutAsync();
+        }
+
+        public async Task<ActionResponse<User>> UpdateUserAsync(User user)
+        {
+            try
+            {
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return new ActionResponse<User>
+                    {
+                        Success = true,
+                        CodError = string.Empty,
+                        Entity = user
+                    };
+                }
+                return new ActionResponse<User>
+                {
+                    Success = false,
+                    CodError = "ERR002",
+                    Message = string.Join(", ", result.Errors.Select(e => e.Description))
+                };
+            }
+            catch (DbUpdateException ex)
+            {
+                return new ActionResponse<User>
+                {
+                    Success = false,
+                    CodError = "DB001",
+                    Message = ex.Message
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ActionResponse<User>
+                {
+                    Success = false,
+                    CodError = "ERR001",
+                    Message = ex.Message
+                };
+            }
+        }
+
+        public async Task<ActionResponse<User>> DeleteUserAsync(Guid userId)
+        {
+            try
+            {
+                var user = await _dataContext.Users.FindAsync(userId.ToString());
+                if (user == null)
+                {
+                    return new ActionResponse<User>
+                    {
+                        Success = false,
+                        CodError = "ERR002",
+                        Message = "User not found"
+                    };
+                }
+
+                _dataContext.Users.Remove(user);
+                await _dataContext.SaveChangesAsync();
+
+                return new ActionResponse<User>
+                {
+                    Success = true,
+                    CodError = string.Empty,
+                    Entity = user
+                };
+            }
+            catch (DbUpdateException ex)
+            {
+                return new ActionResponse<User>
+                {
+                    Success = false,
+                    CodError = "DB001",
+                    Message = ex.Message
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ActionResponse<User>
+                {
+                    Success = false,
+                    CodError = "ERR001",
+                    Message = ex.Message
+                };
+            }
         }
     }
 }

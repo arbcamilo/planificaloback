@@ -3,6 +3,7 @@ using Planificalo.Backend.Repositories.Interfaces;
 using Planificalo.Backend.UnitsOfWork.Interfaces;
 using Planificalo.Shared.DTOs;
 using Planificalo.Shared.Entities;
+using Planificalo.Shared.Responses;
 
 namespace Planificalo.Backend.UnitsOfWork.Implementations
 {
@@ -36,5 +37,9 @@ namespace Planificalo.Backend.UnitsOfWork.Implementations
         public async Task LogoutAsync() => await _usersRepository.LogoutAsync();
 
         public async Task<IEnumerable<User>> GetAllUsersAsync() => await _usersRepository.GetAllUsersAsync();
+
+        public async Task<ActionResponse<User>> UpdateUserAsync(User user) => await _usersRepository.UpdateUserAsync(user);
+
+        public async Task<ActionResponse<User>> DeleteUserAsync(Guid userId) => await _usersRepository.DeleteUserAsync(userId);
     }
 }

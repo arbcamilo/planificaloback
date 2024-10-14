@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Planificalo.Backend.Data;
 using Planificalo.Backend.Helpers;
@@ -115,6 +116,118 @@ namespace Planificalo.Backend.Controllers
                 Success = true,
                 Entity = users
             });
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ActionResponse<User>>> Update(string id, [FromBody] UserDTO model)
+        {
+            try
+            {
+                var user = await _usersUnitOfWork.GetUserAsync(new Guid(id));
+                if (user == null)
+                {
+                    return NotFound(new ActionResponse<User>
+                    {
+                        Success = false,
+                        Message = "User not found"
+                    });
+                }
+
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.Email = model.Email;
+                user.UserName = model.Email;
+                user.DocumentType = model.DocumentType;
+                user.UserType = model.UserType;
+                user.Photo = model.Photo;
+                user.UserStatus = model.UserStatus;
+
+                var result = await _usersUnitOfWork.UpdateUserAsync(user);
+                if (result.Success)
+                {
+                    return Ok(new ActionResponse<User>
+                    {
+                        Success = true,
+                        Entity = user
+                    });
+                }
+
+                return BadRequest(new ActionResponse<User>
+                {
+                    Success = false,
+                    Message = result.Message
+                });
+            }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest(new ActionResponse<User>
+                {
+                    Success = false,
+                    CodError = "DB001",
+                    Message = ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ActionResponse<User>
+                {
+                    Success = false,
+                    CodError = "ERR001",
+                    Message = ex.Message
+                });
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ActionResponse<User>>> Delete(string id)
+        {
+            try
+            {
+                var user = await _usersUnitOfWork.GetUserAsync(new Guid(id));
+                if (user == null)
+                {
+                    return NotFound(new ActionResponse<User>
+                    {
+                        Success = false,
+                        Message = "User not found"
+                    });
+                }
+
+                var result = await _usersUnitOfWork.DeleteUserAsync(new Guid(user.Id));
+
+                if (result.Success)
+                {
+                    return Ok(new ActionResponse<User>
+                    {
+                        Success = true,
+                        Entity = user
+                    });
+                }
+
+                return BadRequest(new ActionResponse<User>
+                {
+                    Success = false,
+                    Message = result.Message
+                });
+            }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest(new ActionResponse<User>
+                {
+                    Success = false,
+                    CodError = "DB001",
+                    Message = ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ActionResponse<User>
+                {
+                    Success = false,
+                    CodError = "ERR001",
+                    Message = ex.Message
+                });
+            }
         }
 
         private TokenDTO BuildToken(User user)

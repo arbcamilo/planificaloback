@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Planificalo.Shared.DTOs;
 using Planificalo.Shared.Entities;
+using Planificalo.Shared.Responses;
 
 namespace Planificalo.Backend.Repositories.Interfaces
 {
@@ -27,5 +28,9 @@ namespace Planificalo.Backend.Repositories.Interfaces
         Task<bool> IsUserInRoleAsync(User user, string roleName);
 
         Task<IEnumerable<User>> GetAllUsersAsync(); // Agregar este método
+
+        Task<ActionResponse<User>> UpdateUserAsync(User user); // Agregar este método
+
+        Task<ActionResponse<User>> DeleteUserAsync(Guid userId); // Agregar este método
     }
 }
