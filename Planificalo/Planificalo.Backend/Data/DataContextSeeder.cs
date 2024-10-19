@@ -17,9 +17,19 @@ namespace Planificalo.Backend.Data
             var mailHelper = serviceProvider.GetRequiredService<IMailHelper>();
             var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
+            // Crear roles si no existen
+            await CreateRoleIfNotExists(usersUnitOfWork, "Admin");
+            await CreateRoleIfNotExists(usersUnitOfWork, "Anonymous");
+            await CreateRoleIfNotExists(usersUnitOfWork, "User");
+
             await CreateUserIfNotExists(serviceProvider, usersUnitOfWork, mailHelper, configuration, "juan.arboleda@gmail.com", "Juan Camilo", "Arboleda Cano");
-            await CreateUserIfNotExists(serviceProvider, usersUnitOfWork, mailHelper, configuration, "jhondigon@gmail.com", "Jhon Alejandro", "Díaz");
+            await CreateUserIfNotExists(serviceProvider, usersUnitOfWork, mailHelper, configuration, "jhondigon@gmail.com", "Jhon Alejandro", "DÃ­az");
             await CreateUserIfNotExists(serviceProvider, usersUnitOfWork, mailHelper, configuration, "paolita2502@gmail.com", "Paola Andrea", "Molina");
+        }
+
+        private static async Task CreateRoleIfNotExists(IUsersUnitOfWork usersUnitOfWork, string roleName)
+        {
+            await usersUnitOfWork.CheckRoleAsync(roleName);
         }
 
         private static async Task CreateUserIfNotExists(IServiceProvider serviceProvider, IUsersUnitOfWork usersUnitOfWork, IMailHelper mailHelper, IConfiguration configuration, string email, string firstName, string lastName)
