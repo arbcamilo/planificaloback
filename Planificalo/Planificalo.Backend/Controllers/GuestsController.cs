@@ -7,7 +7,7 @@ using Planificalo.Shared.Entities;
 namespace Planificalo.Backend.Controllers
 {
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
     [Route("api/admin/[controller]")]
     public class GuestsController : GenericController<Guest>
     {

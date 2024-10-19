@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Planificalo.Backend.Data;
@@ -74,8 +76,8 @@ namespace Planificalo.Backend.Controllers
         [HttpPost("Logout")]
         public async Task<IActionResult> Logout()
         {
-             await _usersUnitOfWork.LogoutAsync();
-             return NoContent();
+            await _usersUnitOfWork.LogoutAsync();
+            return NoContent();
         }
 
         [HttpGet("ConfirmEmail")]
@@ -126,6 +128,7 @@ namespace Planificalo.Backend.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
         public async Task<ActionResult<ActionResponse<User>>> Update(string id, [FromBody] UserDTO model)
         {
             try
@@ -186,6 +189,7 @@ namespace Planificalo.Backend.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User,Admin")]
         public async Task<ActionResult<ActionResponse<User>>> Delete(string id)
         {
             try

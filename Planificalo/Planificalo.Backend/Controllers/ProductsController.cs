@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Planificalo.Backend.Controllers
 {
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Provider,Admin")]
     [Route("api/admin/[controller]")]
     public class ProductsController : GenericController<Product>
     {

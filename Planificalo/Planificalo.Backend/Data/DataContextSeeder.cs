@@ -21,6 +21,7 @@ namespace Planificalo.Backend.Data
             await CreateRoleIfNotExists(usersUnitOfWork, "Admin");
             await CreateRoleIfNotExists(usersUnitOfWork, "Anonymous");
             await CreateRoleIfNotExists(usersUnitOfWork, "User");
+            await CreateRoleIfNotExists(usersUnitOfWork, "Provider");
 
             await CreateUserIfNotExists(serviceProvider, usersUnitOfWork, mailHelper, configuration, "juan.arboleda@gmail.com", "Juan Camilo", "Arboleda Cano");
             await CreateUserIfNotExists(serviceProvider, usersUnitOfWork, mailHelper, configuration, "jhondigon@gmail.com", "Jhon Alejandro", "Díaz");
