@@ -8,6 +8,7 @@ using Planificalo.Backend.Helpers;
 using Planificalo.Backend.UnitsOfWork.Interfaces;
 using Planificalo.Shared.DTOs;
 using Planificalo.Shared.Entities;
+using Planificalo.Shared.Enums;
 using Planificalo.Shared.Responses;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -39,11 +40,29 @@ namespace Planificalo.Backend.Controllers
             var result = await _usersUnitOfWork.AddUserAsync(user, model.Password);
             if (result.Succeeded)
             {
-                await _usersUnitOfWork.AddUserToRoleAsync(user, user.UserType.ToString());
+                switch (user.UserType)
+                {
+                    case UserType.Admin:
+                        await _usersUnitOfWork.AddUserToRoleAsync(user, "Admin");
+                        break;
+
+                    case UserType.User:
+                        await _usersUnitOfWork.AddUserToRoleAsync(user, "User");
+                        break;
+
+                    case UserType.Provider:
+                        await _usersUnitOfWork.AddUserToRoleAsync(user, "Provider");
+                        break;
+
+                    case UserType.Anonymous:
+                        await _usersUnitOfWork.AddUserToRoleAsync(user, "Anonymous");
+                        break;
+                }
+
                 var response = await SendConfirmationEmailAsync(user, model.Language);
                 if (response.Success)
                 {
-                    return NoContent();
+                    return Ok();
                 }
 
                 return BadRequest(response.Message);
@@ -77,7 +96,7 @@ namespace Planificalo.Backend.Controllers
         public async Task<IActionResult> Logout()
         {
             await _usersUnitOfWork.LogoutAsync();
-            return NoContent();
+            return Ok();
         }
 
         [HttpGet("ConfirmEmail")]
@@ -91,12 +110,12 @@ namespace Planificalo.Backend.Controllers
             }
 
             var result = await _usersUnitOfWork.ConfirmEmailAsync(user, token);
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
                 return BadRequest(result.Errors.FirstOrDefault() + " " + token);
             }
 
-            return NoContent();
+            return Ok();
         }
 
         private async Task<ActionResponse<string>> SendConfirmationEmailAsync(User user, string language)
@@ -106,14 +125,57 @@ namespace Planificalo.Backend.Controllers
             {
                 userId = user.Id,
                 token = mytoken
-            }, protocol: HttpContext.Request.Scheme, _configuration["UrlFrontend"]);
+            }, protocol: HttpContext.Request.Scheme);
 
-            if (language == "es")
+            var urlfront = _configuration["UrlFrontend"];
+
+            tokenLink = $"{urlfront}/confirmemail?userId={user.Id}&token={mytoken}";
+
+            // Validar que las configuraciones no sean nulas
+            var subjectConfirmationES = _configuration["Email:SubjectConfirmationES"];
+            var bodyConfirmationES = _configuration["Email:BodyConfirmationES"];
+            var subjectConfirmationEN = _configuration["Email:SubjectConfirmationEN"];
+            var bodyConfirmationEN = _configuration["Email:BodyConfirmationEN"];
+
+            if (string.IsNullOrEmpty(subjectConfirmationES))
             {
-                return _mailHelper.SendEmail(user.FullName, user.Email!, _configuration["Mail:SubjectConfirmationES"]!, string.Format(_configuration["Mail:BodyConfirmationES"]!, tokenLink), language);
+                Console.WriteLine("Email:SubjectConfirmationES is null or empty");
+            }
+            if (string.IsNullOrEmpty(bodyConfirmationES))
+            {
+                Console.WriteLine("Email:BodyConfirmationES is null or empty");
+            }
+            if (string.IsNullOrEmpty(subjectConfirmationEN))
+            {
+                Console.WriteLine("Email:SubjectConfirmationEN is null or empty");
+            }
+            if (string.IsNullOrEmpty(bodyConfirmationEN))
+            {
+                Console.WriteLine("Email:BodyConfirmationEN is null or empty");
             }
 
-            return _mailHelper.SendEmail(user.FullName, user.Email, _configuration["Mail:SubjectConfirmationES"]!, string.Format(_configuration["Mail:BodyConfirmationES"]!, tokenLink), language);
+            string subject, body;
+            if (language == "es")
+            {
+                subject = subjectConfirmationES;
+                body = string.Format(bodyConfirmationES, tokenLink);
+            }
+            else
+            {
+                subject = subjectConfirmationEN;
+                body = string.Format(bodyConfirmationEN, tokenLink);
+            }
+
+            if (string.IsNullOrEmpty(subject) || string.IsNullOrEmpty(body))
+            {
+                return new ActionResponse<string>
+                {
+                    Success = false,
+                    Message = "Email subject or body is not configured properly."
+                };
+            }
+
+            return _mailHelper.SendEmail(user.FullName, user.Email!, subject, body, language);
         }
 
         [HttpGet("GetAll")]
