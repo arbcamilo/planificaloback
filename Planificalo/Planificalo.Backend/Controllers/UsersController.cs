@@ -71,6 +71,13 @@ namespace Planificalo.Backend.Controllers
             return BadRequest("Invalid login attempt");
         }
 
+        [HttpPost("Logout")]
+        public async Task<IActionResult> Logout()
+        {
+             await _usersUnitOfWork.LogoutAsync();
+             return NoContent();
+        }
+
         [HttpGet("ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmailAsync(string userId, string token)
         {
