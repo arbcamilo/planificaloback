@@ -17,7 +17,6 @@ namespace Planificalo.Backend.Data
             var mailHelper = serviceProvider.GetRequiredService<IMailHelper>();
             var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
-            // Crear roles si no existen
             await CreateRoleIfNotExists(usersUnitOfWork, "Admin");
             await CreateRoleIfNotExists(usersUnitOfWork, "Anonymous");
             await CreateRoleIfNotExists(usersUnitOfWork, "User");
