@@ -231,7 +231,7 @@ namespace Planificalo.Backend.Controllers
 
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
-        public async Task<ActionResult<ActionResponse<User>>> Update(string id, [FromBody] UserDTO model)
+        public async Task<ActionResult<ActionResponse<User>>> Update(string id, [FromBody] UserUpdateDTO model)
         {
             try
             {

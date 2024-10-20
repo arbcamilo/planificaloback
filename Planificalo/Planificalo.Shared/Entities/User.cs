@@ -23,14 +23,14 @@ namespace Planificalo.Shared.Entities
         [Required(ErrorMessage = "The field {0} is required")]
         public string DocumentNumber { get; set; }
 
-        public UserType UserType { get; set; }
+        public UserType? UserType { get; set; }
         public string? Photo { get; set; }
 
         [MaxLength(20, ErrorMessage = "The field {0} cannot have more than {1} characters")]
-        public string UserStatus { get; set; }
+        public string? UserStatus { get; set; }
 
         public DateOnly BirthDate { get; set; }
-        public DateOnly AccountCreationDate { get; set; }
+        public DateOnly? AccountCreationDate { get; set; }
         public string FullName => $"{FirstName} {LastName}";
     }
 }
