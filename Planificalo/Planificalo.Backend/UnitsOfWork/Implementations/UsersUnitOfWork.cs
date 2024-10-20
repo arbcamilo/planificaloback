@@ -41,5 +41,7 @@ namespace Planificalo.Backend.UnitsOfWork.Implementations
         public async Task<ActionResponse<User>> UpdateUserAsync(User user) => await _usersRepository.UpdateUserAsync(user);
 
         public async Task<ActionResponse<User>> DeleteUserAsync(Guid userId) => await _usersRepository.DeleteUserAsync(userId);
+
+        public async Task<ActionResponse<User>> ChangePasswordAsync(User user, string currentPassword, string newPassword) => await _usersRepository.ChangePasswordAsync(user, currentPassword, newPassword);
     }
 }

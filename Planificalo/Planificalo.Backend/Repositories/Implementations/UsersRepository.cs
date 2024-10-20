@@ -128,6 +128,47 @@ namespace Planificalo.Backend.Repositories.Implementations
             }
         }
 
+        public async Task<ActionResponse<User>> ChangePasswordAsync(User user, string currentPassword, string newPassword)
+        {
+            try
+            {
+                var result = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+                if (result.Succeeded)
+                {
+                    return new ActionResponse<User>
+                    {
+                        Success = true,
+                        CodError = string.Empty,
+                        Entity = user
+                    };
+                }
+                return new ActionResponse<User>
+                {
+                    Success = false,
+                    CodError = "ERR002",
+                    Message = string.Join(", ", result.Errors.Select(e => e.Description))
+                };
+            }
+            catch (DbUpdateException ex)
+            {
+                return new ActionResponse<User>
+                {
+                    Success = false,
+                    CodError = "DB001",
+                    Message = ex.Message
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ActionResponse<User>
+                {
+                    Success = false,
+                    CodError = "ERR001",
+                    Message = ex.Message
+                };
+            }
+        }
+
         public async Task<ActionResponse<User>> DeleteUserAsync(Guid userId)
         {
             try

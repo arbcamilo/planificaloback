@@ -32,5 +32,7 @@ namespace Planificalo.Backend.Repositories.Interfaces
         Task<ActionResponse<User>> UpdateUserAsync(User user); // Agregar este método
 
         Task<ActionResponse<User>> DeleteUserAsync(Guid userId); // Agregar este método
+
+        Task<ActionResponse<User>> ChangePasswordAsync(User user, string currentPassword, string newPassword); // Agregar este método
     }
 }

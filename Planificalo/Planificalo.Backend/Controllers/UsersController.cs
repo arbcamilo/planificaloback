@@ -147,7 +147,7 @@ namespace Planificalo.Backend.Controllers
             var mytoken = await _usersUnitOfWork.GenerateEmailConfirmationTokenAsync(user);
             var urlfront = _configuration["UrlFrontend"];
 
-            var tokenLink = $"{urlfront}/forgot-password?userId={user.Id}&token={mytoken}";
+            var tokenLink = $"{urlfront}/reset-password?userId={user.Id}&token={mytoken}";
 
             // Validar que las configuraciones no sean nulas
             var subjectReConfirmationES = _configuration["Email:SubjectRecoveryES"];
@@ -316,6 +316,56 @@ namespace Planificalo.Backend.Controllers
                     });
                 }
 
+                return BadRequest(new ActionResponse<User>
+                {
+                    Success = false,
+                    Message = result.Message
+                });
+            }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest(new ActionResponse<User>
+                {
+                    Success = false,
+                    CodError = "DB001",
+                    Message = ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ActionResponse<User>
+                {
+                    Success = false,
+                    CodError = "ERR001",
+                    Message = ex.Message
+                });
+            }
+        }
+
+        [HttpPut("ChangePassword")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User,Admin,Providers")]
+        public async Task<ActionResult<ActionResponse<User>>> ChangePassword([FromBody] ChangePasswordDTO model)
+        {
+            try
+            {
+                var user = await _usersUnitOfWork.GetUserAsync(model.Email);
+                if (user == null)
+                {
+                    return NotFound(new ActionResponse<User>
+                    {
+                        Success = false,
+                        Message = "User not found"
+                    });
+                }
+                var result = await _usersUnitOfWork.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+                if (result.Success)
+                {
+                    return Ok(new ActionResponse<User>
+                    {
+                        Success = true,
+                        Entity = user
+                    });
+                }
                 return BadRequest(new ActionResponse<User>
                 {
                     Success = false,
