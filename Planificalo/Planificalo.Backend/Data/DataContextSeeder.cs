@@ -38,6 +38,10 @@ namespace Planificalo.Backend.Data
 
             if (user == null)
             {
+                // Generar un número de identificación de 7 dígitos
+                var random = new Random();
+                var documentNumber = random.Next(1000000, 9999999).ToString();
+
                 user = new User
                 {
                     UserName = email,
@@ -45,6 +49,7 @@ namespace Planificalo.Backend.Data
                     FirstName = firstName,
                     LastName = lastName,
                     DocumentType = "CC",
+                    DocumentNumber = documentNumber, // Asignar el número de identificación
                     UserType = UserType.Admin,
                     UserStatus = "Active",
                     BirthDate = new DateOnly(1990, 1, 1),
