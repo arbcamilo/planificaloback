@@ -60,7 +60,7 @@ namespace Planificalo.Backend.Data
 
                     // Generate email confirmation token
                     var token = await usersUnitOfWork.GenerateEmailConfirmationTokenAsync(user);
-                    var tokenLink = $"{configuration["UrlFrontend"]}/confirmemail?userId={user.Id}&token={token}";
+                    var tokenLink = $"{configuration["UrlFrontend"]}/confirmation-email?userId={user.Id}&token={token}";
 
                     // Ensure email is not null before sending
                     if (!string.IsNullOrEmpty(user.Email))

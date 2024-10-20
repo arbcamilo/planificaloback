@@ -62,7 +62,7 @@ namespace Planificalo.Backend.Controllers
                 var response = await SendConfirmationEmailAsync(user, model.Language);
                 if (response.Success)
                 {
-                    return Ok();
+                    return Ok(response);
                 }
 
                 return BadRequest(response.Message);
@@ -99,6 +99,30 @@ namespace Planificalo.Backend.Controllers
             return Ok();
         }
 
+        [HttpGet("RecoveryPassword")]
+        public async Task<IActionResult> RecoveryPassword(string email, string lenguage)
+        {
+            var user = await _usersUnitOfWork.GetUserAsync(email);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var token = await _usersUnitOfWork.GenerateEmailConfirmationTokenAsync(user);
+
+            var response = await SendReConfirmationEmailAsync(user, lenguage.ToLower());
+            if (response.Success)
+            {
+                return Ok(new ActionResponse<User>
+                {
+                    Success = true,
+                    Entity = user,
+                    Message = "Email sent successfully"
+                });
+            }
+
+            return BadRequest(response.Message);
+        }
+
         [HttpGet("ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmailAsync(string userId, string token)
         {
@@ -118,41 +142,56 @@ namespace Planificalo.Backend.Controllers
             return Ok();
         }
 
+        private async Task<ActionResponse<string>> SendReConfirmationEmailAsync(User user, string language)
+        {
+            var mytoken = await _usersUnitOfWork.GenerateEmailConfirmationTokenAsync(user);
+            var urlfront = _configuration["UrlFrontend"];
+
+            var tokenLink = $"{urlfront}/forgot-password?userId={user.Id}&token={mytoken}";
+
+            // Validar que las configuraciones no sean nulas
+            var subjectReConfirmationES = _configuration["Email:SubjectRecoveryES"];
+            var bodyReConfirmationES = _configuration["Email:BodyRecoveryES"];
+            var subjectReConfirmationEN = _configuration["Email:SubjectRecoveryEN"];
+            var bodyReConfirmationEN = _configuration["Email:BodyRecoveryEN"];
+
+            string subject, body;
+            if (language == "es")
+            {
+                subject = subjectReConfirmationES;
+                body = string.Format(bodyReConfirmationES, tokenLink);
+            }
+            else
+            {
+                subject = subjectReConfirmationEN;
+                body = string.Format(bodyReConfirmationEN, tokenLink);
+            }
+
+            if (string.IsNullOrEmpty(subject) || string.IsNullOrEmpty(body))
+            {
+                return new ActionResponse<string>
+                {
+                    Success = false,
+                    Message = "Email subject or body is not configured properly."
+                };
+            }
+
+            return _mailHelper.SendEmail(user.FullName, user.Email!, subject, body, language);
+        }
+
         private async Task<ActionResponse<string>> SendConfirmationEmailAsync(User user, string language)
         {
             var mytoken = await _usersUnitOfWork.GenerateEmailConfirmationTokenAsync(user);
-            var tokenLink = Url.Action("ConfirmEmail", "Users", new
-            {
-                userId = user.Id,
-                token = mytoken
-            }, protocol: HttpContext.Request.Scheme);
 
             var urlfront = _configuration["UrlFrontend"];
 
-            tokenLink = $"{urlfront}/confirmemail?userId={user.Id}&token={mytoken}";
+            var tokenLink = $"{urlfront}/confirmation-email?userId={user.Id}&token={mytoken}";
 
             // Validar que las configuraciones no sean nulas
             var subjectConfirmationES = _configuration["Email:SubjectConfirmationES"];
             var bodyConfirmationES = _configuration["Email:BodyConfirmationES"];
             var subjectConfirmationEN = _configuration["Email:SubjectConfirmationEN"];
             var bodyConfirmationEN = _configuration["Email:BodyConfirmationEN"];
-
-            if (string.IsNullOrEmpty(subjectConfirmationES))
-            {
-                Console.WriteLine("Email:SubjectConfirmationES is null or empty");
-            }
-            if (string.IsNullOrEmpty(bodyConfirmationES))
-            {
-                Console.WriteLine("Email:BodyConfirmationES is null or empty");
-            }
-            if (string.IsNullOrEmpty(subjectConfirmationEN))
-            {
-                Console.WriteLine("Email:SubjectConfirmationEN is null or empty");
-            }
-            if (string.IsNullOrEmpty(bodyConfirmationEN))
-            {
-                Console.WriteLine("Email:BodyConfirmationEN is null or empty");
-            }
 
             string subject, body;
             if (language == "es")
@@ -307,7 +346,7 @@ namespace Planificalo.Backend.Controllers
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.PrimarySid, user.Id),
+                new("id", user.Id),
                 new Claim(ClaimTypes.Name, user.Email),
                 new Claim(ClaimTypes.Role, user.UserType.ToString()),
                 new("FirstName", user.FirstName),
