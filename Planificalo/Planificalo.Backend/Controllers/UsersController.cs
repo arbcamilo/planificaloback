@@ -245,14 +245,56 @@ namespace Planificalo.Backend.Controllers
                     });
                 }
 
-                user.FirstName = model.FirstName;
-                user.LastName = model.LastName;
+                if (!string.IsNullOrEmpty(model.FirstName))
+                {
+                    user.FirstName = model.FirstName;
+                }
+                if (!string.IsNullOrEmpty(model.LastName))
+                {
+                    user.LastName = model.LastName;
+                }
+                if (!string.IsNullOrEmpty(model.PhoneNumber))
+                {
+                    user.PhoneNumber = model.PhoneNumber;
+                }
+
                 user.Email = model.Email;
-                user.UserName = model.Email;
-                user.DocumentType = model.DocumentType;
-                user.UserType = model.UserType;
-                user.Photo = model.Photo;
-                user.UserStatus = model.UserStatus;
+
+                if (!string.IsNullOrEmpty(model.UserName))
+                {
+                    user.UserName = model.Email;
+                }
+
+                if (!string.IsNullOrEmpty(model.DocumentType))
+                {
+                    user.DocumentType = model.DocumentType;
+                }
+                if (!string.IsNullOrEmpty(model.DocumentNumber))
+                {
+                    user.DocumentNumber = model.DocumentNumber;
+                }
+
+                if (!string.IsNullOrEmpty(model.UserType.ToString()))
+                {
+                    user.UserType = model.UserType;
+                }
+
+                if (!string.IsNullOrEmpty(model.UserStatus))
+                {
+                    user.UserStatus = model.UserStatus;
+                }
+                if (model.BirthDate != null)
+                {
+                    user.BirthDate = model.BirthDate;
+                }
+                if (model.AccountCreationDate != null)
+                {
+                    user.AccountCreationDate = model.AccountCreationDate;
+                }
+                if (!string.IsNullOrEmpty(model.Photo))
+                {
+                    user.Photo = model.Photo;
+                }
 
                 var result = await _usersUnitOfWork.UpdateUserAsync(user);
                 if (result.Success)
@@ -344,7 +386,7 @@ namespace Planificalo.Backend.Controllers
         }
 
         [HttpPut("ChangePassword")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User,Admin,Providers")]
+        [AllowAnonymous]
         public async Task<ActionResult<ActionResponse<User>>> ChangePassword([FromBody] ChangePasswordDTO model)
         {
             try
