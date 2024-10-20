@@ -150,7 +150,6 @@ namespace Planificalo.Backend.Controllers
 
             var tokenLink = $"{urlfront}/reset-password?userId={user.Id}&token={mytoken.Token}";
 
-            // Validar que las configuraciones no sean nulas
             var subjectReConfirmationES = _configuration["Email:SubjectRecoveryES"];
             var bodyReConfirmationES = _configuration["Email:BodyRecoveryES"];
             var subjectReConfirmationEN = _configuration["Email:SubjectRecoveryEN"];
@@ -188,7 +187,6 @@ namespace Planificalo.Backend.Controllers
 
             var tokenLink = $"{urlfront}/confirmation-email?userId={user.Id}&token={mytoken}";
 
-            // Validar que las configuraciones no sean nulas
             var subjectConfirmationES = _configuration["Email:SubjectConfirmationES"];
             var bodyConfirmationES = _configuration["Email:BodyConfirmationES"];
             var subjectConfirmationEN = _configuration["Email:SubjectConfirmationEN"];
