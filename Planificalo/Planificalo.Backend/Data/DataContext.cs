@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Planificalo.Shared.Entities;
 
 namespace Planificalo.Backend.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<User>
     {
         private readonly IConfiguration _configuration;
 
@@ -13,7 +14,6 @@ namespace Planificalo.Backend.Data
             _configuration = configuration;
         }
 
-        public DbSet<User> Users { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Revocation> Revocations { get; set; }
         public DbSet<EventType> EventTypes { get; set; }
@@ -32,10 +32,6 @@ namespace Planificalo.Backend.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<User>()
-                .HasIndex(u => new { u.DocumentType, u.IdentityDocument })
-                .IsUnique();
 
             modelBuilder.Entity<Provider>()
                 .HasIndex(p => new { p.DocumentType, p.IdentityDocument })
