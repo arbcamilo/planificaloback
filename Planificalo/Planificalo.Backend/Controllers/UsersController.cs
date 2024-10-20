@@ -307,11 +307,11 @@ namespace Planificalo.Backend.Controllers
         {
             var claims = new List<Claim>
             {
+                new Claim(ClaimTypes.PrimarySid, user.Id),
                 new Claim(ClaimTypes.Name, user.Email),
                 new Claim(ClaimTypes.Role, user.UserType.ToString()),
                 new("FirstName", user.FirstName),
                 new("LastName", user.LastName),
-                new("Photo", user.Photo ?? string.Empty)
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["jwtKey"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
