@@ -77,7 +77,8 @@ namespace Planificalo.Backend.Controllers
             if (result.Succeeded)
             {
                 var user = await _usersUnitOfWork.GetUserAsync(model.Email);
-                return Ok(BuildToken(user));
+                var tokenDTO = BuildToken(user);
+                return Ok(tokenDTO);
             }
 
             if (result.IsLockedOut)
@@ -107,9 +108,10 @@ namespace Planificalo.Backend.Controllers
             {
                 return NotFound();
             }
-            var token = await _usersUnitOfWork.GenerateEmailConfirmationTokenAsync(user);
 
-            var response = await SendReConfirmationEmailAsync(user, lenguage.ToLower());
+            var tokenDTO = BuildToken(user);
+
+            var response = await SendReConfirmationEmailAsync(user, tokenDTO, lenguage.ToLower());
             if (response.Success)
             {
                 return Ok(new ActionResponse<User>
@@ -142,12 +144,11 @@ namespace Planificalo.Backend.Controllers
             return Ok();
         }
 
-        private async Task<ActionResponse<string>> SendReConfirmationEmailAsync(User user, string language)
+        private async Task<ActionResponse<string>> SendReConfirmationEmailAsync(User user, TokenDTO mytoken, string language)
         {
-            var mytoken = await _usersUnitOfWork.GenerateEmailConfirmationTokenAsync(user);
             var urlfront = _configuration["UrlFrontend"];
 
-            var tokenLink = $"{urlfront}/reset-password?userId={user.Id}&token={mytoken}";
+            var tokenLink = $"{urlfront}/reset-password?userId={user.Id}&token={mytoken.Token}";
 
             // Validar que las configuraciones no sean nulas
             var subjectReConfirmationES = _configuration["Email:SubjectRecoveryES"];
@@ -363,6 +364,7 @@ namespace Planificalo.Backend.Controllers
                     return Ok(new ActionResponse<User>
                     {
                         Success = true,
+                        Message = "Password changed successfully",
                         Entity = user
                     });
                 }
