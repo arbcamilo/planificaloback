@@ -1,37 +1,36 @@
+﻿using Microsoft.AspNetCore.Identity;
+using Planificalo.Shared.Enums;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Planificalo.Shared.Entities
 {
-    public class User
+    public class User : IdentityUser
     {
-        public int Id { get; set; }
+        [MaxLength(100, ErrorMessage = "The field {0} cannot have more than {1} characters")]
+        public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "The field {0} is required.")]
-        [MaxLength(40, ErrorMessage = "The field {0} cannot have more than {1} characters")]
+        [MaxLength(100, ErrorMessage = "The field {0} cannot have more than {1} characters")]
+        public string LastName { get; set; }
+
         public string DocumentType { get; set; }
 
-        [Required(ErrorMessage = "The field {0} is required.")]
-        public long IdentityDocument { get; set; }
+        [MaxLength(20, ErrorMessage = "The field {0} cannot have more than {1} characters")]
+        [Required(ErrorMessage = "The field {0} is required")]
+        public string DocumentNumber { get; set; }
 
-        [Required(ErrorMessage = "The field {0} is required.")]
-        [MaxLength(100, ErrorMessage = "The field {0} cannot have more than {1} characters")]
-        public string Name { get; set; }
+        public UserType? UserType { get; set; }
+        public string? Photo { get; set; }
 
-        [Required(ErrorMessage = "The field {0} is required.")]
-        [MaxLength(100, ErrorMessage = "The field {0} cannot have more than {1} characters")]
-        public string Email { get; set; }
+        [MaxLength(20, ErrorMessage = "The field {0} cannot have more than {1} characters")]
+        public string? UserStatus { get; set; }
 
-        [Required(ErrorMessage = "The field {0} is required.")]
-        [MaxLength(15, ErrorMessage = "The field {0} cannot have more than {1} characters")]
-        public string Phone { get; set; }
-
-        [MaxLength(100, ErrorMessage = "The field {0} cannot have more than {1} characters")]
-        public string UserStatus { get; set; }
-
-        [Required(ErrorMessage = "The field {0} is required.")]
         public DateOnly BirthDate { get; set; }
-
-        [Required(ErrorMessage = "The field {0} is required.")]
-        public DateOnly AccountCreationDate { get; set; }
+        public DateOnly? AccountCreationDate { get; set; }
+        public string FullName => $"{FirstName} {LastName}";
     }
 }
