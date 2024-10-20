@@ -269,6 +269,7 @@ namespace Planificalo.Backend.Controllers
                 {
                     user.DocumentType = model.DocumentType;
                 }
+
                 if (!string.IsNullOrEmpty(model.DocumentNumber))
                 {
                     user.DocumentNumber = model.DocumentNumber;
