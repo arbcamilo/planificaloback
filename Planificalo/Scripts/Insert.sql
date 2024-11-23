@@ -1,7 +1,4 @@
-﻿
-
-DELETE FROm Users;
-DELETE FROM ProductQuotes;
+﻿DELETE FROM ProductQuotes;
 DELETE FROM ServiceQuotes;
 DELETE FROM Quotes;
 DELETE FROM ServiceProviders;
@@ -13,40 +10,8 @@ DELETE FROM EventTypes;
 DELETE FROM Events;
 DELETE FROM GuestEvents;
 DELETE FROM Invitations;
-
-
-
-
 DELETE FROM EventTypes;
 DELETE FROM Products;
-
-
-SET IDENTITY_INSERT Users ON;
-
-
-INSERT INTO Users (Id, DocumentType, IdentityDocument, Name, Email, Phone, UserStatus, BirthDate, AccountCreationDate) VALUES
-(1, 'Cedula', 123456789, 'John Doe', 'johndoe@example.com', '1234567890', 'Active', '1990-01-01', GETDATE()),
-(2, 'Cedula', 987654321, 'Jane Smith', 'janesmith@example.com', '0987654321', 'Inactive', '1992-02-02', GETDATE()),
-(3, 'Cedula', 112233445, 'Alice Johnson', 'alicejohnson@example.com', '1231231234', 'Active', '1985-03-03', GETDATE()),
-(4, 'Cedula', 556677889, 'Bob Brown', 'bobbrown@example.com', '3213214321', 'Inactive', '1988-04-04', GETDATE()),
-(5, 'Cedula', 998877665, 'Charlie Davis', 'charliedavis@example.com', '4564564567', 'Active', '1991-05-05', GETDATE()),
-(6, 'Cedula', 111222333, 'David Harris', 'davidharris@example.com', '1112223333', 'Active', '1993-06-06', GETDATE()),
-(7, 'Cedula', 444555666, 'Eva Green', 'evagreen@example.com', '4445556666', 'Inactive', '1994-07-07', GETDATE()),
-(8, 'Cedula', 777888999, 'Frank White', 'frankwhite@example.com', '7778889999', 'Active', '1995-08-08', GETDATE()),
-(9, 'Cedula', 101010101, 'Grace Black', 'graceblack@example.com', '1010101010', 'Inactive', '1996-09-09', GETDATE()),
-(10, 'Cedula', 202020202, 'Henry Blue', 'henryblue@example.com', '2020202020', 'Active', '1997-10-10', GETDATE()),
-(11, 'Cedula', 303030303, 'Ivy Brown', 'ivybrown@example.com', '3030303030', 'Inactive', '1998-11-11', GETDATE()),
-(12, 'Cedula', 404040404, 'Jack Green', 'jackgreen@example.com', '4040404040', 'Active', '1999-12-12', GETDATE()),
-(13, 'Cedula', 505050505, 'Karen White', 'karenwhite@example.com', '5050505050', 'Inactive', '2000-01-13', GETDATE()),
-(14, 'Cedula', 606060606, 'Leo Black', 'leoblack@example.com', '6060606060', 'Active', '2001-02-14', GETDATE()),
-(15, 'Cedula', 707070707, 'Mia Blue', 'miablue@example.com', '7070707070', 'Inactive', '2002-03-15', GETDATE()),
-(16, 'Cedula', 808080808, 'Noah Brown', 'noahbrown@example.com', '8080808080', 'Active', '2003-04-16', GETDATE()),
-(17, 'Cedula', 909090909, 'Olivia Green', 'oliviagreen@example.com', '9090909090', 'Inactive', '2004-05-17', GETDATE()),
-(18, 'Cedula', 111111111, 'Paul White', 'paulwhite@example.com', '1111111111', 'Active', '2005-06-18', GETDATE()),
-(19, 'Cedula', 222222222, 'Quinn Black', 'quinnblack@example.com', '2222222222', 'Inactive', '2006-07-19', GETDATE()),
-(20, 'Cedula', 333333333, 'Rachel Blue', 'rachelblue@example.com', '3333333333', 'Active', '2007-08-20', GETDATE());
-
-SET IDENTITY_INSERT Users OFF;
 
 SET IDENTITY_INSERT Providers ON;
 
