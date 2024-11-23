@@ -13,7 +13,6 @@ DELETE FROM Invitations;
 DELETE FROM EventTypes;
 DELETE FROM Products;
 
-
 SET IDENTITY_INSERT Providers ON;
 
 
