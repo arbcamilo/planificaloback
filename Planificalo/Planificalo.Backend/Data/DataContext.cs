@@ -17,7 +17,6 @@ namespace Planificalo.Backend.Data
         public DbSet<Event> Events { get; set; }
         public DbSet<Revocation> Revocations { get; set; }
         public DbSet<EventType> EventTypes { get; set; }
-        public DbSet<Provider> Providers { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Shared.Entities.ServiceProvider> ServiceProviders { get; set; }
@@ -32,10 +31,6 @@ namespace Planificalo.Backend.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<Provider>()
-                .HasIndex(p => new { p.DocumentType, p.IdentityDocument })
-                .IsUnique();
 
             // Define composite primary key for ProductQuote
             modelBuilder.Entity<ProductQuote>()

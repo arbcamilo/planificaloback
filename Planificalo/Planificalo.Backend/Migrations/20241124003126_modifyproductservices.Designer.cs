@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Planificalo.Backend.Data;
 
@@ -11,9 +12,11 @@ using Planificalo.Backend.Data;
 namespace Planificalo.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241124003126_modifyproductservices")]
+    partial class modifyproductservices
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -331,6 +334,73 @@ namespace Planificalo.Backend.Migrations
                     b.ToTable("ProductQuotes");
                 });
 
+            modelBuilder.Entity("Planificalo.Shared.Entities.Provider", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ContactPhone")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Department")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("DocumentType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<long>("IdentityDocument")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsNaturalPerson")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentType", "IdentityDocument")
+                        .IsUnique();
+
+                    b.ToTable("Providers");
+                });
+
             modelBuilder.Entity("Planificalo.Shared.Entities.Quote", b =>
                 {
                     b.Property<int>("Id")
@@ -370,6 +440,8 @@ namespace Planificalo.Backend.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("EventId");
+
+                    b.HasIndex("ProviderId");
 
                     b.ToTable("Quotes");
                 });
@@ -617,6 +689,12 @@ namespace Planificalo.Backend.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Planificalo.Shared.Entities.Provider", null)
+                        .WithMany("ProductProviders")
+                        .HasForeignKey("ProviderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Planificalo.Shared.Entities.ProductQuote", b =>
@@ -646,11 +724,25 @@ namespace Planificalo.Backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Planificalo.Shared.Entities.Provider", "Provider")
+                        .WithMany("Quotes")
+                        .HasForeignKey("ProviderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Event");
+
+                    b.Navigation("Provider");
                 });
 
             modelBuilder.Entity("Planificalo.Shared.Entities.ServiceProvider", b =>
                 {
+                    b.HasOne("Planificalo.Shared.Entities.Provider", null)
+                        .WithMany("ServiceProviders")
+                        .HasForeignKey("ProviderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Planificalo.Shared.Entities.Service", null)
                         .WithMany("ServiceProviders")
                         .HasForeignKey("ServiceId")
@@ -687,6 +779,15 @@ namespace Planificalo.Backend.Migrations
                     b.Navigation("ProductProvider");
 
                     b.Navigation("ProductQuote");
+                });
+
+            modelBuilder.Entity("Planificalo.Shared.Entities.Provider", b =>
+                {
+                    b.Navigation("ProductProviders");
+
+                    b.Navigation("Quotes");
+
+                    b.Navigation("ServiceProviders");
                 });
 
             modelBuilder.Entity("Planificalo.Shared.Entities.Quote", b =>

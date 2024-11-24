@@ -11,7 +11,6 @@ namespace Planificalo.Shared.Entities
         public Event Event { get; set; }
 
         public int ProviderId { get; set; }
-        public Provider Provider { get; set; }
 
         public int Quantity { get; set; }
         public decimal Total { get; set; }
