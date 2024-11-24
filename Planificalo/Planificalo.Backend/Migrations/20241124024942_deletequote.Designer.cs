@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Planificalo.Backend.Data;
 
@@ -11,9 +12,11 @@ using Planificalo.Backend.Data;
 namespace Planificalo.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241124024942_deletequote")]
+    partial class deletequote
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -296,28 +299,6 @@ namespace Planificalo.Backend.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Planificalo.Shared.Entities.ProductEvent", b =>
-                {
-                    b.Property<int>("EventId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProviderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("EventId", "ProductId", "ProviderId");
-
-                    b.ToTable("ProductEvent");
-                });
-
             modelBuilder.Entity("Planificalo.Shared.Entities.ProductProvider", b =>
                 {
                     b.Property<int>("ProviderId")
@@ -329,10 +310,17 @@ namespace Planificalo.Backend.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
+                    b.Property<int?>("EventId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("ProviderId", "ProductId");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductProviders");
                 });
@@ -380,34 +368,15 @@ namespace Planificalo.Backend.Migrations
                     b.ToTable("Services");
                 });
 
-            modelBuilder.Entity("Planificalo.Shared.Entities.ServiceEvent", b =>
-                {
-                    b.Property<int>("EventId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProviderId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("EventId", "ServiceId", "ProviderId");
-
-                    b.ToTable("ServiceEvent");
-                });
-
             modelBuilder.Entity("Planificalo.Shared.Entities.ServiceProvider", b =>
                 {
                     b.Property<int>("ProviderId")
                         .HasColumnType("int");
 
                     b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EventId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
@@ -417,6 +386,10 @@ namespace Planificalo.Backend.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ProviderId", "ServiceId");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("ServiceId");
 
                     b.ToTable("ServiceProviders");
                 });
@@ -572,31 +545,47 @@ namespace Planificalo.Backend.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Planificalo.Shared.Entities.ProductEvent", b =>
+            modelBuilder.Entity("Planificalo.Shared.Entities.ProductProvider", b =>
                 {
                     b.HasOne("Planificalo.Shared.Entities.Event", null)
-                        .WithMany("ProductEvent")
-                        .HasForeignKey("EventId")
+                        .WithMany("ProductQuotes")
+                        .HasForeignKey("EventId");
+
+                    b.HasOne("Planificalo.Shared.Entities.Product", null)
+                        .WithMany("ProductProvider")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Planificalo.Shared.Entities.ServiceEvent", b =>
+            modelBuilder.Entity("Planificalo.Shared.Entities.ServiceProvider", b =>
                 {
-                    b.HasOne("Planificalo.Shared.Entities.Event", "Event")
-                        .WithMany("ServiceEvent")
-                        .HasForeignKey("EventId")
+                    b.HasOne("Planificalo.Shared.Entities.Event", null)
+                        .WithMany("ServiceQuotes")
+                        .HasForeignKey("EventId");
+
+                    b.HasOne("Planificalo.Shared.Entities.Service", null)
+                        .WithMany("ServiceProviders")
+                        .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Event");
                 });
 
             modelBuilder.Entity("Planificalo.Shared.Entities.Event", b =>
                 {
-                    b.Navigation("ProductEvent");
+                    b.Navigation("ProductQuotes");
 
-                    b.Navigation("ServiceEvent");
+                    b.Navigation("ServiceQuotes");
+                });
+
+            modelBuilder.Entity("Planificalo.Shared.Entities.Product", b =>
+                {
+                    b.Navigation("ProductProvider");
+                });
+
+            modelBuilder.Entity("Planificalo.Shared.Entities.Service", b =>
+                {
+                    b.Navigation("ServiceProviders");
                 });
 #pragma warning restore 612, 618
         }
