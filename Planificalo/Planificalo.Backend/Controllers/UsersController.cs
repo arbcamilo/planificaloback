@@ -438,13 +438,15 @@ namespace Planificalo.Backend.Controllers
         private TokenDTO BuildToken(User user)
         {
             var claims = new List<Claim>
-            {
-                new("id", user.Id),
-                new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.Role, user.UserType.ToString()),
-                new("FirstName", user.FirstName),
-                new("LastName", user.LastName),
-            };
+    {
+        new("id", user.Id),
+        new Claim(ClaimTypes.Name, user.Email),
+        new Claim(ClaimTypes.Role, user.UserType.ToString()),
+        new("FirstName", user.FirstName),
+        new("LastName", user.LastName),
+        new("UserType", user.UserType.ToString()), // Adicionando UserType
+        new("DocumentNumber", user.DocumentNumber) // Adicionando DocumentNumber
+    };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["jwtKey"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var expiration = DateTime.UtcNow.AddYears(30);
