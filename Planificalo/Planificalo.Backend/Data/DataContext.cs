@@ -33,10 +33,10 @@ namespace Planificalo.Backend.Data
                 .HasKey(ge => new { ge.EventId, ge.GuestId });
 
             modelBuilder.Entity<ProductEvent>()
-            .HasNoKey();
+                .HasKey(pe => new { pe.EventId, pe.ProductId, pe.ProviderId });
 
-            modelBuilder.Entity<ProductEvent>()
-            .HasNoKey();
+            modelBuilder.Entity<ServiceEvent>()
+                .HasKey(se => new { se.EventId, se.ServiceId, se.ProviderId });
 
             modelBuilder.Entity<ProductProvider>()
                 .HasKey(pp => new { pp.ProviderId, pp.ProductId });

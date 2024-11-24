@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Planificalo.Shared.Entities
 {
     public class ProductEvent
