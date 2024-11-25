@@ -17,6 +17,41 @@ namespace Planificalo.Backend.Repositories.Implementations
             _dataContext = context;
         }
 
+        public async Task<ActionResponse<Event>> GetByIdAsync(int id)
+        {
+            try
+            {
+                var entity = await _dataContext.Events
+                    .Include(e => e.ProductEvent)
+                    .Include(e => e.ServiceEvent)
+                    .FirstOrDefaultAsync(e => e.Id == id);
+
+                return new ActionResponse<Event>
+                {
+                    Success = entity != null,
+                    Entity = entity
+                };
+            }
+            catch (DbUpdateException ex)
+            {
+                return new ActionResponse<Event>
+                {
+                    Success = false,
+                    CodError = "DB001",
+                    Message = ex.Message
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ActionResponse<Event>
+                {
+                    Success = false,
+                    CodError = "ERR001",
+                    Message = ex.Message
+                };
+            }
+        }
+
         public new async Task<ActionResponse<IEnumerable<Event>>> GetAllAsync()
         {
             try

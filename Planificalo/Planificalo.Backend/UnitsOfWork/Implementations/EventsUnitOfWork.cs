@@ -22,5 +22,10 @@ namespace Planificalo.Backend.UnitsOfWork.Implementations
         {
             return await _eventRepository.GetAllAsync();
         }
+
+        public async Task<ActionResponse<Event>> GetByIdAsync(int id)
+        {
+            return await _eventRepository.GetByIdAsync(id);
+        }
     }
 }

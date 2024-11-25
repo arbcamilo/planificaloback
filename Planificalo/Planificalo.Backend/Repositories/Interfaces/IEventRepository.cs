@@ -8,5 +8,7 @@ namespace Planificalo.Backend.Repositories.Interfaces
     public interface IEventRepository : IGenericRepository<Event>
     {
         new Task<ActionResponse<IEnumerable<Event>>> GetAllAsync();
+
+        Task<ActionResponse<Event>> GetByIdAsync(int id);
     }
 }
