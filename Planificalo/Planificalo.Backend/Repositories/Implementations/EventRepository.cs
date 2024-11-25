@@ -17,11 +17,15 @@ namespace Planificalo.Backend.Repositories.Implementations
             _dataContext = context;
         }
 
-        public override async Task<ActionResponse<IEnumerable<Event>>> GetAllAsync()
+        public new async Task<ActionResponse<IEnumerable<Event>>> GetAllAsync()
         {
             try
             {
-                var entities = await _dataContext.Events.ToListAsync();
+                var entities = await _dataContext.Events
+                    .Include(e => e.ProductEvent)
+                    .Include(e => e.ServiceEvent)
+                    .ToListAsync();
+
                 return new ActionResponse<IEnumerable<Event>>
                 {
                     Success = true,
