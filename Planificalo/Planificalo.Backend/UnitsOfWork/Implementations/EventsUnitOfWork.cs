@@ -9,16 +9,18 @@ namespace Planificalo.Backend.UnitsOfWork.Implementations
 {
     public class EventsUnitOfWork : GenericUnitOfWork<Event>, IEventsUnitOfWork
     {
-        private readonly IGenericRepository<Event> _repository;
+        private readonly IGenericRepository<Event> _genericRepository;
+        private readonly IEventRepository _eventRepository;
 
-        public EventsUnitOfWork(IGenericRepository<Event> repository) : base(repository)
+        public EventsUnitOfWork(IGenericRepository<Event> genericRepository, IEventRepository eventRepository) : base(genericRepository)
         {
-            _repository = repository;
+            _genericRepository = genericRepository;
+            _eventRepository = eventRepository;
         }
 
-        public async Task<ActionResponse<IEnumerable<Event>>> GetAllAsync()
+        public new async Task<ActionResponse<IEnumerable<Event>>> GetAllAsync()
         {
-            return await _repository.GetAllAsync();
+            return await _eventRepository.GetAllAsync();
         }
     }
 }
