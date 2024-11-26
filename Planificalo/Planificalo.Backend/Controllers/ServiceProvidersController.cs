@@ -11,7 +11,7 @@ using ServiceProvider = Planificalo.Shared.Entities.ServiceProvider;
 namespace Planificalo.Backend.Controllers
 {
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Provider,Admin")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Provider,Admin,User")]
     [Route("api/admin/[controller]")]
     public class ServiceProvidersController : GenericController<ServiceProvider>
     {
