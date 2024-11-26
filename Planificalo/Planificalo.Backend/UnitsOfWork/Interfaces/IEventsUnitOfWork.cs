@@ -8,5 +8,7 @@ namespace Planificalo.Backend.UnitsOfWork.Interfaces
     public interface IEventsUnitOfWork : IGenericUnitOfWork<Event>
     {
         Task<ActionResponse<IEnumerable<Event>>> GetAllAsync();
+
+        Task<ActionResponse<Event>> GetByIdAsync(int id);
     }
 }

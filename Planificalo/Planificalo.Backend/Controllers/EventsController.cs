@@ -32,5 +32,17 @@ namespace Planificalo.Backend.Controllers
             }
             return BadRequest(response);
         }
+
+        [AllowAnonymous]
+        [HttpGet("GetById/{id}")]
+        public async Task<ActionResult<ActionResponse<Event>>> GetById(int id)
+        {
+            var response = await _eventsUnitOfWork.GetByIdAsync(id);
+            if (response.Success)
+            {
+                return Ok(response);
+            }
+            return NotFound(response);
+        }
     }
 }
