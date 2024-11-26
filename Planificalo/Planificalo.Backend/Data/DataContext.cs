@@ -39,10 +39,10 @@ namespace Planificalo.Backend.Data
                 .HasKey(se => new { se.EventId, se.ServiceId, se.ProviderId });
 
             modelBuilder.Entity<ProductProvider>()
-                .HasKey(pp => new { pp.ProviderId, pp.ProductId });
+                .HasKey(pp => new { pp.Id });
 
             modelBuilder.Entity<Shared.Entities.ServiceProvider>()
-                .HasKey(sp => new { sp.ProviderId, sp.ServiceId });
+                .HasKey(sp => new { sp.Id });
         }
 
         private void DisableCascadeDelete(ModelBuilder modelBuilder)
